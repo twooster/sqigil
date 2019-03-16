@@ -1,6 +1,6 @@
-import { dateToStringUTC } from '../src/date'
-import { ToLiteralOpts, toLiteral } from '../src/to-literal'
-import { toPostgres, rawType } from '../src/pg-convertible'
+import { dateToStringUTC } from '../date'
+import { ToLiteralOpts, toLiteral } from '../to-literal'
+import { toPostgres, rawType } from '../pg-convertible'
 
 describe('toLiteral', () => {
   const opts: ToLiteralOpts = {

@@ -11,7 +11,7 @@ import { sql as S } from 'sqigil'
 const usersTbl = 'my_users'
 
 function getUserById(pg, id) {
-  const safeSql = S`SELECT * FROM ${S.name(usersTbl)} WHERE id = ${id}`
+  const safeSql = S`SELECT * FROM ${S.id(usersTbl)} WHERE id = ${id}`
   return pg.query(safeSql)
 }
 

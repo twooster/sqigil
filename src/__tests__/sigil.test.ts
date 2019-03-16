@@ -1,4 +1,4 @@
-import { sql } from '../src/sigil'
+import { sql } from '../sigil'
 
 describe('default sigil', () => {
   test('with no interpolation', () => {
