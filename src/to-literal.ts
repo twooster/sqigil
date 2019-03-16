@@ -1,10 +1,9 @@
+import { ConversionError } from './errors'
 import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
 
-export class ConversionError extends Error { }
-
 export interface ToLiteralOpts {
-  dateToString: (date: Date) => string
-  objToString: (obj: object) => string
+  convertDate: (date: Date) => unknown
+  convertObject: (obj: object) => unknown
 }
 
 /**
@@ -46,7 +45,7 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
       if (val === null) {
         return "NULL"
       } else if (val instanceof Date) {
-        return "'" + opts.dateToString(val) + "'"
+        return toLiteralRecur(opts, opts.convertDate(val), seen)
       } else if (val instanceof Buffer) {
         return "E'\\x" + val.toString('hex')  + "'"
       } else {
@@ -78,8 +77,7 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
         } else if (Array.isArray(val)) {
           return arrayToLiteral(opts, val, seen)
         } else {
-          // Normal object, escape to JSON
-          return escapeString(opts.objToString(val as object))
+          return toLiteralRecur(opts, opts.convertObject(val as object), seen)
         }
       }
     default:
