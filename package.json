@@ -1,0 +1,47 @@
+{
+  "name": "sqigil",
+  "version": "0.0.1",
+  "description": "SQigiL: Postres SQL sigil string",
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test",
+    "preversion": "npm run build-docs && git add docs && git commit -m 'Update docs'",
+    "build": "rimraf 'dist' && tsc -b tsconfig-build.json",
+    "build-docs": "typedoc --out docs  --exclude '**/*.spec.*' --mode file ./src/index.ts",
+    "cover": "jest --coverage && codecov",
+    "test": "jest"
+  },
+  "author": "Tony Wooster <twooster@gmail.com>",
+  "homepage": "https://github.com/twooster/sqigil#readme",
+  "bugs": {
+    "url": "https://github.com/twooster/sqigil/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twooster/sqigil.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.11.3",
+    "codecov": "^3.2.0",
+    "jest": "^24.3.1",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.3.3333"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "sql",
+    "postgres",
+    "sigil",
+    "formatting",
+    "escaping",
+    "string"
+  ],
+  "typings": "dist/index.d.ts"
+}
