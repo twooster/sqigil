@@ -1,6 +1,7 @@
-# SQigiL: A Postgres SQL template string
+# SQigiL: A Postgres SQL template string for Javascript
 
 [![CircleCI](https://circleci.com/gh/twooster/sqigil.svg?style=svg)](https://circleci.com/gh/twooster/sqigil)
+[![Coverage Status](https://coveralls.io/repos/github/twooster/sqigil/badge.svg)](https://coveralls.io/github/twooster/sqigil)
 
 This project provides an easy-to-use, safe, SQL string templating
 solution. It's built to work with
