@@ -10,6 +10,9 @@ solution. It's built to work with
 This project is built in Typescript, and will maintain 100% test
 coverage.
 
+Disclaimer: This project is still pretty new. I'm fairly confident in
+its safety, but for now, you're a beta user.
+
 ## Installation
 
 ```sh
