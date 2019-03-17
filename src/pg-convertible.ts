@@ -21,9 +21,10 @@ export function isPgSafeString(val: unknown): val is PgSafeString {
   return isPgConvertible(val) && val[rawType] === true
 }
 
-export function makeSafeString(val: string): PgSafeString {
+export function makeSafeString(val: string): PgSafeString & { toString: () => string } {
   return {
     [toPostgres]: () => val,
-    [rawType]: true
+    [rawType]: true,
+    toString: () => val
   }
 }

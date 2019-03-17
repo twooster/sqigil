@@ -1,3 +1,4 @@
+import { mockDate } from '../__mocks__/date'
 import { sql } from '../sigil'
 
 describe('default sigil', () => {
@@ -20,8 +21,35 @@ describe('default sigil', () => {
       .toEqual('"tbl" "tbl"."col"')
   })
 
-  test.todo('utc')
-  test.todo('tz')
+  test('utc', () => {
+    const d = mockDate({
+      year: 2019,
+      month: 0,
+      day: 22,
+      hours: 14,
+      minutes: 23,
+      seconds: 45,
+      millis: 221,
+      tzOffset: 120
+    })
+
+    expect(sql`${sql.utc(d)}`).toEqual(`'2019-01-22T14:23:45.221+00:00'`)
+  })
+
+  test('tz', () => {
+    const d = mockDate({
+      year: 2019,
+      month: 0,
+      day: 22,
+      hours: 14,
+      minutes: 23,
+      seconds: 45,
+      millis: 221,
+      tzOffset: 120
+    })
+
+    expect(sql`${sql.tz(d)}`).toEqual(`'2019-01-22T14:23:45.221-02:00'`)
+  })
 
   test('keys', () => {
     const o = { a: 1, b: 2 }
@@ -49,6 +77,11 @@ describe('default sigil', () => {
     expect(sql`${sql.csids(['tbl', ['tbl', 'col']])}`)
       .toEqual(`"tbl", "tbl"."col"`)
     expect(() => sql`${sql.csids(['tbl', []])}`).toThrow()
+  })
+
+  test('value', () => {
+    expect(sql`${sql.value('string')}`)
+      .toEqual(`'string'`)
   })
 })
 

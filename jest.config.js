@@ -1,7 +1,10 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  rootDir: './src',
+  modulePathIgnorePatterns: [
+    '<rootDir>/dist'
+  ],
+  rootDir: './',
   transform: {
     "\\.(ts|tsx)$": "ts-jest"
   },

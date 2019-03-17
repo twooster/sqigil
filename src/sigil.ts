@@ -47,13 +47,6 @@ export function makeSigil(opts: SigilOpts): SqlSigil {
   }
 
   sigil.id = function id(first: string, ...rest: string[]): PgSafeString {
-    if (rest.length === 0) {
-      if (first === '*') {
-        return makeSafeString('*')
-      } else {
-        return makeSafeString(escapeId(first))
-      }
-    }
     let str = escapeId(first)
     for (let i = 0; i < rest.length; ++i) {
       str += '.' + escapeId(rest[i])

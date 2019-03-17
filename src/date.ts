@@ -8,25 +8,25 @@ function pad2(num: number) {
 
 function pad3(num: number): string {
   const str = num.toString()
-  if (num < 100) {
-    return "0" + str
-  }
   if (num < 10) {
     return "00" + str
+  }
+  if (num < 100) {
+    return "0" + str
   }
   return str
 }
 
 function pad4(num: number): string {
   const str = num.toString()
-  if (num < 1000) {
-    return "0" + str
+  if (num < 10) {
+    return "000" + str
   }
   if (num < 100) {
     return "00" + str
   }
-  if (num < 10) {
-    return "000" + str
+  if (num < 1000) {
+    return "0" + str
   }
   return str
 }
