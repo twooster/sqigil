@@ -53,7 +53,7 @@ function getUserByNameSql(name) {
 //  `SELECT * FROM "users" WHERE name = 'john''; DROP TABLE users'`
 
 function insertUserSql(userObj) {
-  return sql`INSERT INTO ${sql.id(usersTbl)}(${sql.keys(userObj)}) VALUES(${sql.values(userObj})`;
+  return sql`INSERT INTO ${sql.id(usersTbl)}(${sql.keys(userObj)}) VALUES(${sql.values(userObj)})`;
 }
 // e.g., insertUserSql({ id: 123, name: "John Smith", age: 23 }) ===
 //   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`
