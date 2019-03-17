@@ -1,8 +1,34 @@
 import { ConversionError } from './errors'
 import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
 
+/**
+ * Options to use when converting certain values to their SQL-safe
+ * equivalents.
+ */
 export interface ToLiteralOpts {
+  /**
+   * A function to be called to convert dates to their SQL equivalent.
+   * If this function returns a normal value, that value will be
+   * escaped according to usual rules. Meaning, e.g., that you can
+   * return a string, and that string will be appropriately escaped.
+   *
+   * However, if you return an object with `toPostgres` and `rawType`
+   * attributes, those attributes will be respeted in the usual way.
+   *
+   * @param date the date to convert
+   */
   convertDate: (date: Date) => unknown
+  /**
+   * A function to be called to convert dates to their SQL equivalent.
+   * If this function returns a normal value, that value will be
+   * escaped according to usual rules. Meaning, e.g., that you can
+   * return a string, and that string will be appropriately escaped.
+   *
+   * However, if you return an object with `toPostgres` and `rawType`
+   * attributes, those attributes will be respeted in the usual way.
+   *
+   * @param object the object to convert to sql
+   */
   convertObject: (obj: object) => unknown
 }
 
@@ -85,6 +111,14 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
   }
 }
 
+/**
+ * Converts a given value to its Postgres literal representation, given
+ * the provided options.
+ *
+ * @param opts the conversion options
+ * @param val the value to convert
+ * @returns the given value converted to a sql-safe string
+ */
 export function toLiteral(opts: ToLiteralOpts, val: unknown): string {
   return toLiteralRecur(opts, val)
 }

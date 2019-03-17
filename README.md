@@ -16,6 +16,13 @@ coverage.
 npm install --save sqigil
 ```
 
+## Documentation
+
+**Documentation is available [here](https://twooster.github.io/sqigil)**
+
+Documentation is updated every version bump. A changelog is available
+[here](https://github.com/twooster/sqigil/blob/master/CHANGELOG.md).
+
 ## Motivation
 
 Projects such as [pg-promise](https://github.com/vitaly-t/pg-promise) provide
@@ -51,6 +58,9 @@ function insertUserSql(userObj) {
 // e.g., insertUserSql({ id: 123, name: "John Smith", age: 23 }) ===
 //   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`
 ```
+
+See the [documentation](https://twooster.github.io/sqigil) for a full list
+of available formatting options.
 
 ## License
 

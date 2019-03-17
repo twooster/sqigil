@@ -1,3 +1,7 @@
+/**
+ * Pad a positive number with up to one leading zero
+ * @hidden
+ */
 function pad2(num: number) {
   const str = num.toString()
   if (num < 10) {
@@ -6,6 +10,10 @@ function pad2(num: number) {
   return str
 }
 
+/**
+ * Pad a positive number with up to two leading zeroes
+ * @hidden
+ */
 function pad3(num: number): string {
   const str = num.toString()
   if (num < 10) {
@@ -17,6 +25,10 @@ function pad3(num: number): string {
   return str
 }
 
+/**
+ * Pad a positive number with up to three leading zeroes
+ * @hidden
+ */
 function pad4(num: number): string {
   const str = num.toString()
   if (num < 10) {
@@ -32,7 +44,11 @@ function pad4(num: number): string {
 }
 
 /**
- * Converts a date to a date string with timezone offset
+ * Converts a Date object to a Postgres-compatible date string in the local
+ * timezone. The resulting string is not wrapped or escaped.
+ *
+ * @param date the date to convert
+ * @returns Postgres-compatible date string
  */
 export function dateToString (date: Date): string {
   let offset = -date.getTimezoneOffset()
@@ -56,7 +72,11 @@ export function dateToString (date: Date): string {
 }
 
 /**
- * Converts a date to its UTC representation
+ * Converts a Date object to a Postgres-compatible date string in the UTC
+ * timezone. The resulting string is not wrapped or escaped.
+ *
+ * @param date the date to convert
+ * @returns Postgres-compatible date string in UTC timezone
  */
 export function dateToStringUTC (date: Date): string {
   return pad4(date.getUTCFullYear()) + '-' +

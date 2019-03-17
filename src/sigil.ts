@@ -5,24 +5,182 @@ import { dateToString, dateToStringUTC } from './date'
 
 export type SigilOpts = ToLiteralOpts
 
+/**
+ * The interface of an SqlSigil object
+ */
 export interface SqlSigil {
+  /**
+   * Template string interface. All templated values will be converted
+   * according to the rules of [[value]].
+   */
   (strings: TemplateStringsArray, ...args: unknown[]): string
+
+  /**
+   * Converts any given object into its SQL Boolean equivalent
+   *
+   * @param val the value to convert to boolean, according to Javascript
+   *   boolean semantics
+   */
   bool(val: unknown): PgSafeString
+
+  /**
+   * Converts an array of objects into a comma-separated list of
+   * SQL-safe values.
+   *
+   * @param vals array of values to convert
+   */
   csv(vals: unknown[]): PgSafeString
+
+  /**
+   * Converts an array of strings (or multi-part string ids as arrays)
+   * into a list of comma-separated SQL-safe ids.
+   *
+   * Example:
+   *
+   * ```
+   * sql`SELECT ${sql.csids('id', ['tbl2', 'id'])} FROM tbl, tbl2`
+   * // Becomes
+   * // `SELECT "id", "tbl2"."id" FROM tbl, tbl2`
+   * ```
+   *
+   * @param ids array of ids (strings or string arrays) to covert
+   */
   csids(ids: Array<string | string[]>): PgSafeString
+
+  /**
+   * Converts a string into an SQL-safe identifier. If passed multiple
+   * parameters, `id` will instead build a period-delimited identifier.
+   *
+   * Example:
+   *
+   * ```
+   * sql`SELECT ${sql.id('id')}, ${sql.id('tbl2', 'name')} FROM tbl, tbl2`
+   * // Becomes
+   * // SELECT "id", "tbl2"."name" FROM tbl, tbl2
+   * ```
+   *
+   * @param first first id component
+   * @param rest remainder of id components
+   */
   id(first: string, ...rest: string[]): PgSafeString
-  keys(val: object): PgSafeString
-  raw(val: string): PgSafeString
-  tz(val: Date): PgSafeString
-  utc(val: Date): PgSafeString
+
+  /**
+   * Given a plain javascript object, returns a list of that object's
+   * keys formatted as SQL ids.
+   *
+   * Example:
+   *
+   * ```
+   * sql`INSERT INTO users(${sql.keys({ name: "joe", age: 23 })) ...`
+   * // Becomes
+   * // `INSERT INTO users("name", "age") ...`
+   * ```
+   *
+   * @param object the object whose keys will be iterated
+   */
+  keys(obj: object): PgSafeString
+
+  /**
+   * Includes the provided string as raw, unescaped SQL.
+   *
+   * Example:
+   *
+   * ```
+   * const subQ = sql`SELECT * FROM users`
+   * sql`SELECT * FROM (${sql.raw(subQ)})`
+   * // Becomes
+   * // SELECT * FROM (SELECT * FROM users)
+   * ```
+   *
+   * @param val the raw sql to include
+   */
+  raw(sql: string): PgSafeString
+
+  /**
+   * Converts a date into a Postgres-formatted date string in the local
+   * timezone.
+   *
+   * @param date the date to convert
+   */
+  tz(date: Date): PgSafeString
+
+  /**
+   * Converts a date into a Postgres-formatted date string in the UTC
+   * timezone.
+   *
+   * @param date the date to convert
+   */
+  utc(date: Date): PgSafeString
+
+  /**
+   * Converts a value into its Postgres-escaped equivalent. This is also
+   * the default behavior for any values included in a given query string.
+   *
+   * Example:
+   *
+   * ```
+   * sql`SELECT * FROM users WHERE name = ${sql.value("James")}`
+   * // Becomes
+   * // SELECT * FROM users WHERE name = 'James'
+   * ```
+   *
+   * Boolean values will be converted to TRUE/FALSE.
+   * Undefined objects will be converted to NULL.
+   * Null values will be converted to NULL.
+   * Numbers will be converted to their Postgres equivalents, including
+   *   +Infinity, -Infinity, and NaN.
+   * Arrays will be converted to Postgres array literals, with value
+   *   conversions applied to each array element.
+   * Buffers will be converted to a [Postgres escape string](https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE),
+   *   hex encoded
+   * Date objects will be converted to a Postgres-compatible date string
+   *   according to the `convertDate` option provided to build the sql
+   *   sigil (defaults to `dateToStringUTC`).
+   * Objects will be converted given the following rules:
+   *   * If the object has a `toPostgres` function, that function will be
+   *     called. If the object also has a `rawType` attribute set to true,
+   *     then the results of the `toPostgres` call will be included as
+   *     a raw string. Otherwise, the results of that call will be
+   *     processed as any other normal value
+   *   * The above also applies if the object has the
+   *     `Symbol.for('toPostgres')` and `Symbol.for('ctf.rawType')`
+   *     attributes defined.
+   *   * Otherwise, the object will be converted via the `convertObject`
+   *     attribute used to build the SQL sigil. Defaults to `JSON.stringify`
+   *
+   * @param val the value to convert
+   */
   value(val: unknown): PgSafeString
-  values(val: object): PgSafeString
+
+  /**
+   * Takes the values of the provided object and coverts them to their
+   * Postgres-value equivalents.
+   *
+   * Example:
+   *
+   * ```
+   * sql`INSERT INTO users(name, age) VALUES(${sql.values({ name: "John", age: 23 }))
+   * // Becomes
+   * // INSERT INTO users(name, age) VALUES('John', 23)
+   */
+  values(obj: object): PgSafeString
 }
 
+/**
+ * Escapes a string as though it were a Postgres name/id.
+ * @hidden
+ */
 function escapeId(ref: string): string {
   return '"' + ref.replace(/"/g, '""') + '"'
 }
 
+/**
+ * Builds a sigil/templating object given the provided options
+ *
+ * @param opts the sigil options
+ * @returns a template-string function with associated helpers
+ *   on it
+ */
 export function makeSigil(opts: SigilOpts): SqlSigil {
   function sigil(strings: TemplateStringsArray, ...args: unknown[]): string {
     let i
@@ -103,6 +261,15 @@ export function makeSigil(opts: SigilOpts): SqlSigil {
   return sigil
 }
 
+/**
+ * The default SQL template string sigil.
+ *
+ * * Converts dates to UTC format
+ * * Converts objects to JSON
+ * * Converts all other values according to usual rules
+ *
+ * See [[SqlSigil]] for different options.
+ */
 export const sql: SqlSigil = makeSigil({
   convertDate: dateToStringUTC,
   convertObject: JSON.stringify
