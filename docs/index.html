@@ -72,6 +72,8 @@
 				<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">ES2015 template strings</a>.</p>
 				<p>This project is built in Typescript, and will maintain 100% test
 				coverage.</p>
+				<p>Disclaimer: This project is still pretty new. I&#39;m fairly confident in
+				its safety, but for now, you&#39;re a beta user.</p>
 				<h2 id="installation">Installation</h2>
 				<pre><code class="language-sh">npm install --save sqigil</code></pre>
 				<h2 id="documentation">Documentation</h2>
@@ -103,7 +105,7 @@
 <span class="hljs-comment">//  `SELECT * FROM "users" WHERE name = 'john''; DROP TABLE users'`</span>
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertUserSql</span>(<span class="hljs-params">userObj</span>) </span>{
-  <span class="hljs-keyword">return</span> sql<span class="hljs-string">`INSERT INTO <span class="hljs-subst">${sql.id(usersTbl)}</span>(<span class="hljs-subst">${sql.keys(userObj)}</span>) VALUES(<span class="hljs-subst">${sql.values(userObj}</span>)`</span>;
+  <span class="hljs-keyword">return</span> sql<span class="hljs-string">`INSERT INTO <span class="hljs-subst">${sql.id(usersTbl)}</span>(<span class="hljs-subst">${sql.keys(userObj)}</span>) VALUES(<span class="hljs-subst">${sql.values(userObj)}</span>)`</span>;
 }
 <span class="hljs-comment">// e.g., insertUserSql({ id: 123, name: "John Smith", age: 23 }) ===</span>
 <span class="hljs-comment">//   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`</span></code></pre>
