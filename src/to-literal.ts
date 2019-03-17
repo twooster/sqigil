@@ -1,6 +1,37 @@
 import { ConversionError } from './errors'
 import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
 
+
+interface DateConversionFn {
+  /**
+   * A function to be called to convert dates to their SQL equivalent.
+   * If this function returns a normal value, that value will be
+   * escaped according to usual rules. Meaning, e.g., that you can
+   * return a string, and that string will be appropriately escaped.
+   *
+   * However, if you return an object with `toPostgres` and `rawType`
+   * attributes, those attributes will be respected in the usual way.
+   *
+   * @param date the date to convert
+   */
+  (date: Date): unknown
+}
+
+interface ObjectConversionFn {
+  /**
+   * A function to be called to convert dates to their SQL equivalent.
+   * If this function returns a normal value, that value will be
+   * escaped according to usual rules. Meaning, e.g., that you can
+   * return a string, and that string will be appropriately escaped.
+   *
+   * However, if you return an object with `toPostgres` and `rawType`
+   * attributes, those attributes will be respected in the usual way.
+   *
+   * @param obj the object to convert to sql
+   */
+  (obj: object): unknown
+}
+
 /**
  * Options to use when converting certain values to their SQL-safe
  * equivalents.
@@ -8,32 +39,21 @@ import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
 export interface ToLiteralOpts {
   /**
    * A function to be called to convert dates to their SQL equivalent.
-   * If this function returns a normal value, that value will be
-   * escaped according to usual rules. Meaning, e.g., that you can
-   * return a string, and that string will be appropriately escaped.
    *
-   * However, if you return an object with `toPostgres` and `rawType`
-   * attributes, those attributes will be respeted in the usual way.
-   *
-   * @param date the date to convert
+   * @param convertDate the date conversion function
    */
-  convertDate: (date: Date) => unknown
+  convertDate: DateConversionFn
   /**
-   * A function to be called to convert dates to their SQL equivalent.
-   * If this function returns a normal value, that value will be
-   * escaped according to usual rules. Meaning, e.g., that you can
-   * return a string, and that string will be appropriately escaped.
+   * A function to be called to convert objects to their SQL equivalent.
    *
-   * However, if you return an object with `toPostgres` and `rawType`
-   * attributes, those attributes will be respeted in the usual way.
-   *
-   * @param object the object to convert to sql
+   * @param convertObject the object conversion function
    */
-  convertObject: (obj: object) => unknown
+  convertObject: ObjectConversionFn
 }
 
 /**
  * Escapes a string to its postgres-safe equivalent
+ * @hidden
  */
 function escapeString(value: string): string {
   return "'" + value.replace(/'/g, "''") + "'"
@@ -42,12 +62,16 @@ function escapeString(value: string): string {
 /**
  * Converts an array of values into its postgres literal
  * representation
+ * @hidden
  */
 function arrayToLiteral(opts: ToLiteralOpts, arr: unknown[], seen: Set<unknown>): string {
   const literals = arr.map(val => toLiteralRecur(opts, val, seen))
   return '{' + literals.join(', ') + '}'
 }
 
+/**
+ * @hidden
+ */
 function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>): string {
   switch (typeof val) {
     case 'string':

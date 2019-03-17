@@ -62,6 +62,10 @@ function insertUserSql(userObj) {
 //   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`
 ```
 
+Note that value-conversions are compatible with the interface defined
+by `pg-promise`. That means there is full support for `toPostgres`/`rawType`
+object properties (both strings and symbols).
+
 See the [documentation](https://twooster.github.io/sqigil) for a full list
 of available formatting options.
 

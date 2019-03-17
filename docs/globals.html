@@ -76,6 +76,8 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-is-external tsd-is-not-exported"><a href="interfaces/dateconversionfn.html" class="tsd-kind-icon">Date<wbr>Conversion<wbr>Fn</a></li>
+								<li class="tsd-kind-interface tsd-is-external tsd-is-not-exported"><a href="interfaces/objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/pgconvertible.html" class="tsd-kind-icon">Pg<wbr>Convertible</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/sqlsigil.html" class="tsd-kind-icon">Sql<wbr>Sigil</a></li>
@@ -99,16 +101,12 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#arraytoliteral" class="tsd-kind-icon">array<wbr>ToLiteral</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#datetostring" class="tsd-kind-icon">date<wbr>ToString</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#datetostringutc" class="tsd-kind-icon">date<wbr>ToStringUTC</a></li>
-								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#escapestring" class="tsd-kind-icon">escape<wbr>String</a></li>
-								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#ispgconvertible" class="tsd-kind-icon">is<wbr>PgConvertible</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#ispgsafestring" class="tsd-kind-icon">is<wbr>PgSafe<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#makesafestring" class="tsd-kind-icon">make<wbr>Safe<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#makesigil" class="tsd-kind-icon">make<wbr>Sigil</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#toliteral" class="tsd-kind-icon">to<wbr>Literal</a></li>
-								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#toliteralrecur" class="tsd-kind-icon">to<wbr>Literal<wbr>Recur</a></li>
 							</ul>
 						</section>
 					</div>
@@ -122,9 +120,14 @@
 					<div class="tsd-signature tsd-kind-icon">Sigil<wbr>Opts<span class="tsd-signature-symbol">:</span> <a href="interfaces/toliteralopts.html" class="tsd-signature-type">ToLiteralOpts</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L6">sigil.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L9">sigil.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Options for creating a new sql template-string sigil.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -135,9 +138,15 @@
 					<div class="tsd-signature tsd-kind-icon">raw<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol.for(&#x27;ctf.rawType&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/pg-convertible.ts#L1">pg-convertible.ts:1</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/pg-convertible.ts#L11">pg-convertible.ts:11</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>pg-promise compatible symbol for indicating that the results of
+							a <code>toPostgres</code> method should be interpreted as raw/safe.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
 					<a name="sql" class="tsd-anchor"></a>
@@ -145,7 +154,7 @@
 					<div class="tsd-signature tsd-kind-icon">sql<span class="tsd-signature-symbol">:</span> <a href="interfaces/sqlsigil.html" class="tsd-signature-type">SqlSigil</a><span class="tsd-signature-symbol"> =&nbsp;makeSigil({convertDate: dateToStringUTC,convertObject: JSON.stringify})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L273">sigil.ts:273</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L297">sigil.ts:297</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -157,7 +166,7 @@
 							<li>Converts objects to JSON</li>
 							<li>Converts all other values according to usual rules</li>
 						</ul>
-						<p>See <a href="interfaces/sqlsigil.html">SqlSigil</a> for different options.</p>
+						<p>See <a href="interfaces/sqlsigil.html">SqlSigil</a> for more documentation.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
@@ -166,48 +175,20 @@
 					<div class="tsd-signature tsd-kind-icon">to<wbr>Postgres<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol.for(&#x27;ctf.toPostgres&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/pg-convertible.ts#L2">pg-convertible.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/pg-convertible.ts#L6">pg-convertible.ts:6</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>pg-promise compatible symbol for converting values to Postgres.
+								If an object has this attribute, the results of this function will
+							be be taken to be the object&#39;s database representation.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
-					<a name="arraytoliteral" class="tsd-anchor"></a>
-					<h3>array<wbr>ToLiteral</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">array<wbr>ToLiteral<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/toliteralopts.html" class="tsd-signature-type">ToLiteralOpts</a>, arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span>, seen<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/to-literal.ts#L46">to-literal.ts:46</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Converts an array of values into its postgres literal
-									representation</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>opts: <a href="interfaces/toliteralopts.html" class="tsd-signature-type">ToLiteralOpts</a></h5>
-								</li>
-								<li>
-									<h5>arr: <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-								<li>
-									<h5>seen: <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="datetostring" class="tsd-anchor"></a>
 					<h3>date<wbr>ToString</h3>
@@ -218,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/date.ts#L53">date.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/date.ts#L53">date.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -251,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/date.ts#L81">date.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/date.ts#L81">date.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,66 +255,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
-					<a name="escapestring" class="tsd-anchor"></a>
-					<h3>escape<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">escape<wbr>String<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/to-literal.ts#L38">to-literal.ts:38</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Escapes a string to its postgres-safe equivalent</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
-					<a name="ispgconvertible" class="tsd-anchor"></a>
-					<h3>is<wbr>PgConvertible</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>PgConvertible<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/pg-convertible.ts#L28">pg-convertible.ts:28</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Determines if a given value is PgConvertible like.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>val: <span class="tsd-signature-type">unknown</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the value to check</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>true if the object is a pg-convertible object</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="ispgsafestring" class="tsd-anchor"></a>
 					<h3>is<wbr>PgSafe<wbr>String</h3>
@@ -344,7 +265,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/pg-convertible.ts#L39">pg-convertible.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/pg-convertible.ts#L59">pg-convertible.ts:59</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -376,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/pg-convertible.ts#L51">pg-convertible.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/pg-convertible.ts#L71">pg-convertible.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -413,7 +334,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L184">sigil.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L208">sigil.ts:208</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,7 +367,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/to-literal.ts#L122">to-literal.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/to-literal.ts#L146">to-literal.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -475,35 +396,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
-					<a name="toliteralrecur" class="tsd-anchor"></a>
-					<h3>to<wbr>Literal<wbr>Recur</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Literal<wbr>Recur<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/toliteralopts.html" class="tsd-signature-type">ToLiteralOpts</a>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span>, seen<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/to-literal.ts#L51">to-literal.ts:51</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>opts: <a href="interfaces/toliteralopts.html" class="tsd-signature-type">ToLiteralOpts</a></h5>
-								</li>
-								<li>
-									<h5>val: <span class="tsd-signature-type">unknown</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> seen: <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -518,6 +410,12 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/conversionerror.html" class="tsd-kind-icon">Conversion<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
+						<a href="interfaces/dateconversionfn.html" class="tsd-kind-icon">Date<wbr>Conversion<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
+						<a href="interfaces/objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/pgconvertible.html" class="tsd-kind-icon">Pg<wbr>Convertible</a>
@@ -543,20 +441,11 @@
 					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="globals.html#topostgres" class="tsd-kind-icon">to<wbr>Postgres</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#arraytoliteral" class="tsd-kind-icon">array<wbr>ToLiteral</a>
-					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#datetostring" class="tsd-kind-icon">date<wbr>ToString</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#datetostringutc" class="tsd-kind-icon">date<wbr>ToStringUTC</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#escapestring" class="tsd-kind-icon">escape<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#ispgconvertible" class="tsd-kind-icon">is<wbr>PgConvertible</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#ispgsafestring" class="tsd-kind-icon">is<wbr>PgSafe<wbr>String</a>
@@ -569,9 +458,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#toliteral" class="tsd-kind-icon">to<wbr>Literal</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="globals.html#toliteralrecur" class="tsd-kind-icon">to<wbr>Literal<wbr>Recur</a>
 					</li>
 				</ul>
 			</nav>

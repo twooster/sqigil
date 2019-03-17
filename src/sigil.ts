@@ -3,20 +3,42 @@ import { toPostgres, PgSafeString, isPgSafeString, makeSafeString } from './pg-c
 import { toLiteral, ToLiteralOpts } from './to-literal'
 import { dateToString, dateToStringUTC } from './date'
 
+/**
+ * Options for creating a new sql template-string sigil.
+ */
 export type SigilOpts = ToLiteralOpts
 
 /**
- * The interface of an SqlSigil object
+ * SQL templating string method. Has attached methods for other
+ * interpolations rather than just escaped values.
  */
 export interface SqlSigil {
   /**
    * Template string interface. All templated values will be converted
-   * according to the rules of [[value]].
+   * according to the rules of [[value]] by default. Use the other
+   * formatting methods attached to this object (e.g., [[csv]], [[bool]],
+   * [[id]], etc) to achieve different formatting.
+   *
+   * Example:
+   *
+   * ```
+   * sql`SELECT * FROM ${sql.id('users')} WHERE name = ${"Escaped '' Name"} AND expires_at < ${new Date()}`
+   * // Becomes
+   * // `SELECT * FROM "users" WHERE name = 'Escaped '''' Name' AND expires_at < '2019-03-17T14:52:04.221+00:00'`
+   * ```
    */
   (strings: TemplateStringsArray, ...args: unknown[]): string
 
   /**
-   * Converts any given object into its SQL Boolean equivalent
+   * Converts any given object into its SQL Boolean equivalent.
+   *
+   * Example:
+   *
+   * ```
+   * sql`SELECT ${sql.bool(true)}, ${sql.bool(null)}`
+   * // Becomes
+   * // `SELECT TRUE, FALSE`
+   * ```
    *
    * @param val the value to convert to boolean, according to Javascript
    *   boolean semantics
@@ -25,7 +47,7 @@ export interface SqlSigil {
 
   /**
    * Converts an array of objects into a comma-separated list of
-   * SQL-safe values.
+   * SQL-safe values. See [[value]] for conversion information.
    *
    * @param vals array of values to convert
    */
@@ -33,7 +55,7 @@ export interface SqlSigil {
 
   /**
    * Converts an array of strings (or multi-part string ids as arrays)
-   * into a list of comma-separated SQL-safe ids.
+   * into a list of comma-separated SQL-safe ids. See [[id]].
    *
    * Example:
    *
@@ -49,7 +71,7 @@ export interface SqlSigil {
 
   /**
    * Converts a string into an SQL-safe identifier. If passed multiple
-   * parameters, `id` will instead build a period-delimited identifier.
+   * parameters, this method will instead build a period-delimited identifier.
    *
    * Example:
    *
@@ -66,7 +88,7 @@ export interface SqlSigil {
 
   /**
    * Given a plain javascript object, returns a list of that object's
-   * keys formatted as SQL ids.
+   * keys formatted as SQL ids. See [[id]] for details.
    *
    * Example:
    *
@@ -131,11 +153,11 @@ export interface SqlSigil {
    *   +Infinity, -Infinity, and NaN.
    * Arrays will be converted to Postgres array literals, with value
    *   conversions applied to each array element.
-   * Buffers will be converted to a [Postgres escape string](https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE),
-   *   hex encoded
+   * Buffers will be converted to a hex-encoded
+   *   [Postgres escape string](https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE),
    * Date objects will be converted to a Postgres-compatible date string
-   *   according to the `convertDate` option provided to build the sql
-   *   sigil (defaults to `dateToStringUTC`).
+   *   according to the [[SigilOpts]] `convertDate` option provided to build
+   *   the sql sigil (defaults to [[dateToStringUTC]]).
    * Objects will be converted given the following rules:
    *   * If the object has a `toPostgres` function, that function will be
    *     called. If the object also has a `rawType` attribute set to true,
@@ -143,10 +165,11 @@ export interface SqlSigil {
    *     a raw string. Otherwise, the results of that call will be
    *     processed as any other normal value
    *   * The above also applies if the object has the
-   *     `Symbol.for('toPostgres')` and `Symbol.for('ctf.rawType')`
+   *     `Symbol.for('ctf.toPostgres')` and `Symbol.for('ctf.rawType')`
    *     attributes defined.
-   *   * Otherwise, the object will be converted via the `convertObject`
-   *     attribute used to build the SQL sigil. Defaults to `JSON.stringify`
+   *   * Otherwise, the object will be converted via the [[SigilOpts]]
+   *     `convertObject` attribute used to build the SQL sigil. Defaults to
+   *     `JSON.stringify`
    *
    * @param val the value to convert
    */
@@ -154,7 +177,8 @@ export interface SqlSigil {
 
   /**
    * Takes the values of the provided object and coverts them to their
-   * Postgres-value equivalents.
+   * Postgres-value equivalents. Object values will be converted according
+   * to the rules of [[value]].
    *
    * Example:
    *
@@ -268,7 +292,7 @@ export function makeSigil(opts: SigilOpts): SqlSigil {
  * * Converts objects to JSON
  * * Converts all other values according to usual rules
  *
- * See [[SqlSigil]] for different options.
+ * See [[SqlSigil]] for more documentation.
  */
 export const sql: SqlSigil = makeSigil({
   convertDate: dateToStringUTC,

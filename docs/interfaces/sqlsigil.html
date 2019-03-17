@@ -69,7 +69,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The interface of an SqlSigil object</p>
+						<p>SQL templating string method. Has attached methods for other
+						interpolations rather than just escaped values.</p>
 					</div>
 				</div>
 			</section>
@@ -90,14 +91,20 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L11">sigil.ts:11</a></li>
+								<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L15">sigil.ts:15</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Template string interface. All templated values will be converted
-								according to the rules of <a href="sqlsigil.html#value">value</a>.</p>
+									according to the rules of <a href="sqlsigil.html#value">value</a> by default. Use the other
+									formatting methods attached to this object (e.g., <a href="sqlsigil.html#csv">csv</a>, <a href="sqlsigil.html#bool">bool</a>,
+								<a href="sqlsigil.html#id">id</a>, etc) to achieve different formatting.</p>
 							</div>
+							<p>Example:</p>
+							<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'users'</span>)} <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = ${"Escaped '' Name"} <span class="hljs-keyword">AND</span> expires_at &lt; ${<span class="hljs-built_in">new</span> <span class="hljs-type">Date</span>()}`
+// Becomes
+// `<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> "users" <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = <span class="hljs-string">'Escaped '''' Name'</span> <span class="hljs-keyword">AND</span> expires_at &lt; <span class="hljs-string">'2019-03-17T14:52:04.221+00:00'</span>`</code></pre>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
@@ -146,13 +153,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L24">sigil.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L46">sigil.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Converts any given object into its SQL Boolean equivalent</p>
+									<p>Converts any given object into its SQL Boolean equivalent.</p>
 								</div>
+								<p>Example:</p>
+								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.bool(<span class="hljs-keyword">true</span>)}, ${<span class="hljs-keyword">sql</span>.bool(<span class="hljs-keyword">null</span>)}`
+// Becomes
+// `<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">TRUE</span>, <span class="hljs-keyword">FALSE</span>`</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -178,13 +189,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L48">sigil.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L70">sigil.ts:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Converts an array of strings (or multi-part string ids as arrays)
-									into a list of comma-separated SQL-safe ids.</p>
+									into a list of comma-separated SQL-safe ids. See <a href="sqlsigil.html#id">id</a>.</p>
 								</div>
 								<p>Example:</p>
 								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.csids(<span class="hljs-string">'id'</span>, [<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'id'</span>])} <span class="hljs-keyword">FROM</span> tbl, tbl2`
@@ -214,13 +225,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L32">sigil.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L54">sigil.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Converts an array of objects into a comma-separated list of
-									SQL-safe values.</p>
+									SQL-safe values. See <a href="sqlsigil.html#value">value</a> for conversion information.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -246,13 +257,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L65">sigil.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L87">sigil.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Converts a string into an SQL-safe identifier. If passed multiple
-									parameters, <code>id</code> will instead build a period-delimited identifier.</p>
+									parameters, this method will instead build a period-delimited identifier.</p>
 								</div>
 								<p>Example:</p>
 								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'id'</span>)}, ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'name'</span>)} <span class="hljs-keyword">FROM</span> tbl, tbl2`
@@ -288,13 +299,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L81">sigil.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L103">sigil.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Given a plain javascript object, returns a list of that object&#39;s
-									keys formatted as SQL ids.</p>
+									keys formatted as SQL ids. See <a href="sqlsigil.html#id">id</a> for details.</p>
 								</div>
 								<p>Example:</p>
 								<pre><code>sql`<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span>(${sql.keys({ <span class="hljs-keyword">name</span>: <span class="hljs-string">"joe"</span>, age: <span class="hljs-number">23</span> })) ...<span class="hljs-string">`
@@ -321,7 +332,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L97">sigil.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L119">sigil.ts:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -354,7 +365,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L105">sigil.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L127">sigil.ts:127</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,7 +397,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L113">sigil.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L135">sigil.ts:135</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,7 +429,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L153">sigil.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L176">sigil.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -436,11 +447,11 @@
 									+Infinity, -Infinity, and NaN.
 									Arrays will be converted to Postgres array literals, with value
 									conversions applied to each array element.
-									Buffers will be converted to a <a href="https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE">Postgres escape string</a>,
-									hex encoded
+									Buffers will be converted to a hex-encoded
+									<a href="https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE">Postgres escape string</a>,
 									Date objects will be converted to a Postgres-compatible date string
-									according to the <code>convertDate</code> option provided to build the sql
-									sigil (defaults to <code>dateToStringUTC</code>).
+									according to the <a href="../globals.html#sigilopts">SigilOpts</a> <code>convertDate</code> option provided to build
+									the sql sigil (defaults to <a href="../globals.html#datetostringutc">dateToStringUTC</a>).
 								Objects will be converted given the following rules:</p>
 								<ul>
 									<li>If the object has a <code>toPostgres</code> function, that function will be
@@ -449,10 +460,11 @@
 										a raw string. Otherwise, the results of that call will be
 									processed as any other normal value</li>
 									<li>The above also applies if the object has the
-										<code>Symbol.for(&#39;toPostgres&#39;)</code> and <code>Symbol.for(&#39;ctf.rawType&#39;)</code>
+										<code>Symbol.for(&#39;ctf.toPostgres&#39;)</code> and <code>Symbol.for(&#39;ctf.rawType&#39;)</code>
 									attributes defined.</li>
-									<li>Otherwise, the object will be converted via the <code>convertObject</code>
-									attribute used to build the SQL sigil. Defaults to <code>JSON.stringify</code></li>
+									<li>Otherwise, the object will be converted via the <a href="../globals.html#sigilopts">SigilOpts</a>
+										<code>convertObject</code> attribute used to build the SQL sigil. Defaults to
+									<code>JSON.stringify</code></li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -478,13 +490,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/aeeadfd/src/sigil.ts#L166">sigil.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L190">sigil.ts:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Takes the values of the provided object and coverts them to their
-									Postgres-value equivalents.</p>
+										Postgres-value equivalents. Object values will be converted according
+									to the rules of <a href="sqlsigil.html#value">value</a>.</p>
 								</div>
 								<p>Example:</p>
 								<p><code>`</code>
@@ -516,6 +529,12 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="../classes/conversionerror.html" class="tsd-kind-icon">Conversion<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
+						<a href="dateconversionfn.html" class="tsd-kind-icon">Date<wbr>Conversion<wbr>Fn</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
+						<a href="objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="pgconvertible.html" class="tsd-kind-icon">Pg<wbr>Convertible</a>
@@ -577,20 +596,11 @@
 					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="../globals.html#topostgres" class="tsd-kind-icon">to<wbr>Postgres</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="../globals.html#arraytoliteral" class="tsd-kind-icon">array<wbr>ToLiteral</a>
-					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#datetostring" class="tsd-kind-icon">date<wbr>ToString</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#datetostringutc" class="tsd-kind-icon">date<wbr>ToStringUTC</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="../globals.html#escapestring" class="tsd-kind-icon">escape<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../globals.html#ispgconvertible" class="tsd-kind-icon">is<wbr>PgConvertible</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#ispgsafestring" class="tsd-kind-icon">is<wbr>PgSafe<wbr>String</a>
@@ -603,9 +613,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#toliteral" class="tsd-kind-icon">to<wbr>Literal</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<a href="../globals.html#toliteralrecur" class="tsd-kind-icon">to<wbr>Literal<wbr>Recur</a>
 					</li>
 				</ul>
 			</nav>
