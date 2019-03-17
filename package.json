@@ -1,7 +1,7 @@
 {
   "name": "sqigil",
-  "version": "0.0.2",
-  "description": "SQigiL: Postres SQL sigil string",
+  "version": "0.1.0",
+  "description": "SQigiL: Postgres SQL template string",
   "main": "dist/index.js",
   "scripts": {
     "prepare": "npm run build",
@@ -9,7 +9,7 @@
     "preversion": "npm run build-docs && git add docs && git commit -m 'Update docs'",
     "build": "rimraf 'dist' && tsc -b tsconfig-build.json",
     "build-docs": "typedoc --out docs  --exclude '**/*.spec.*' --mode file ./src/index.ts",
-    "cover": "jest --coverage && codecov",
+    "cover": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "test": "jest"
   },
   "author": "Tony Wooster <twooster@gmail.com>",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.9",
     "@types/node": "^11.11.3",
-    "codecov": "^3.2.0",
+    "coveralls": "^3.0.3",
     "jest": "^24.3.1",
     "rimraf": "^2.6.3",
     "ts-jest": "^24.0.0",
@@ -38,9 +38,9 @@
   "keywords": [
     "sql",
     "postgres",
-    "sigil",
-    "formatting",
-    "escaping",
+    "template",
+    "format",
+    "escape",
     "string"
   ],
   "typings": "dist/index.d.ts"
