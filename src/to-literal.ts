@@ -52,7 +52,7 @@ export interface ToLiteralOpts {
 }
 
 /**
- * Escapes a string to its postgres-safe equivalent
+ * Escapes and wraps a string to its postgres-safe equivalent
  * @hidden
  */
 function escapeString(value: string): string {
@@ -76,6 +76,7 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
   switch (typeof val) {
     case 'string':
       return escapeString(val)
+
     case 'number':
       // Logic from pg-promise
       if (Number.isFinite(val)) {
@@ -87,10 +88,13 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
       } else {
         return "'NaN'"
       }
+
     case 'boolean':
       return val ? "TRUE" : "FALSE"
+
     case 'undefined':
       return "NULL"
+
     case 'object':
       if (val === null) {
         return "NULL"
@@ -130,6 +134,7 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
           return toLiteralRecur(opts, opts.convertObject(val as object), seen)
         }
       }
+
     default:
       throw new ConversionError('Unhandled type: ' + (typeof val))
   }

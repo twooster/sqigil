@@ -69,8 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>SQL templating string method. Has attached methods for other
-						interpolations rather than just escaped values.</p>
+						<p>SQL templating function, with methods for specific conversions.</p>
 					</div>
 				</div>
 			</section>
@@ -91,7 +90,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L15">sigil.ts:15</a></li>
+								<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L14">sigil.ts:14</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -99,12 +98,10 @@
 								<p>Template string interface. All templated values will be converted
 									according to the rules of <a href="sqlsigil.html#value">value</a> by default. Use the other
 									formatting methods attached to this object (e.g., <a href="sqlsigil.html#csv">csv</a>, <a href="sqlsigil.html#bool">bool</a>,
-								<a href="sqlsigil.html#id">id</a>, etc) to achieve different formatting.</p>
+								<a href="sqlsigil.html#id">id</a>, etc) to achieve different output conversions.</p>
 							</div>
-							<p>Example:</p>
-							<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'users'</span>)} <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = ${"Escaped '' Name"} <span class="hljs-keyword">AND</span> expires_at &lt; ${<span class="hljs-built_in">new</span> <span class="hljs-type">Date</span>()}`
-// Becomes
-// `<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> "users" <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = <span class="hljs-string">'Escaped '''' Name'</span> <span class="hljs-keyword">AND</span> expires_at &lt; <span class="hljs-string">'2019-03-17T14:52:04.221+00:00'</span>`</code></pre>
+							<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT * FROM <span class="hljs-subst">${sql.id(<span class="hljs-string">'users'</span>)}</span> WHERE name = <span class="hljs-subst">${<span class="hljs-string">"Escaped '' Name"</span>}</span> AND expires_at &lt; <span class="hljs-subst">${<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()}</span>`</span>
+<span class="hljs-comment">// `SELECT * FROM "users" WHERE name = 'Escaped '''' Name' AND expires_at &lt; '2019-03-17T14:52:04.221+00:00'`</span></code></pre>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
@@ -153,17 +150,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L46">sigil.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L39">sigil.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Converts any given object into its SQL Boolean equivalent.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.bool(<span class="hljs-keyword">true</span>)}, ${<span class="hljs-keyword">sql</span>.bool(<span class="hljs-keyword">null</span>)}`
-// Becomes
-// `<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">TRUE</span>, <span class="hljs-keyword">FALSE</span>`</code></pre>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.bool(<span class="hljs-literal">true</span>)}</span>, <span class="hljs-subst">${sql.bool(<span class="hljs-literal">null</span>)}</span>`</span>
+<span class="hljs-comment">// `SELECT TRUE, FALSE`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -189,7 +184,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L70">sigil.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L65">sigil.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -197,10 +192,8 @@
 									<p>Converts an array of strings (or multi-part string ids as arrays)
 									into a list of comma-separated SQL-safe ids. See <a href="sqlsigil.html#id">id</a>.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.csids(<span class="hljs-string">'id'</span>, [<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'id'</span>])} <span class="hljs-keyword">FROM</span> tbl, tbl2`
-// Becomes
-// `<span class="hljs-keyword">SELECT</span> "id", "tbl2"."id" <span class="hljs-keyword">FROM</span> tbl, tbl2`</code></pre>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.csids(<span class="hljs-string">'id'</span>, [<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'id'</span>])}</span> FROM tbl, tbl2`</span>
+<span class="hljs-comment">// `SELECT "id", "tbl2"."id" FROM tbl, tbl2`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -225,7 +218,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L54">sigil.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L52">sigil.ts:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -233,6 +226,8 @@
 									<p>Converts an array of objects into a comma-separated list of
 									SQL-safe values. See <a href="sqlsigil.html#value">value</a> for conversion information.</p>
 								</div>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.csv([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])}</span>`</span>
+<span class="hljs-comment">// `SELECT 0, 1, 2`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -257,7 +252,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L87">sigil.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L79">sigil.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -265,10 +260,8 @@
 									<p>Converts a string into an SQL-safe identifier. If passed multiple
 									parameters, this method will instead build a period-delimited identifier.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'id'</span>)}, ${<span class="hljs-keyword">sql</span>.id(<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'name'</span>)} <span class="hljs-keyword">FROM</span> tbl, tbl2`
-// Becomes
-// <span class="hljs-keyword">SELECT</span> "id", "tbl2"."name" <span class="hljs-keyword">FROM</span> tbl, tbl2</code></pre>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.id(<span class="hljs-string">'id'</span>)}</span>, <span class="hljs-subst">${sql.id(<span class="hljs-string">'tbl2'</span>, <span class="hljs-string">'name'</span>)}</span> FROM tbl, tbl2`</span>
+<span class="hljs-comment">// `SELECT "id", "tbl2"."name" FROM tbl, tbl2`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -299,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L103">sigil.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L92">sigil.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -307,10 +300,8 @@
 									<p>Given a plain javascript object, returns a list of that object&#39;s
 									keys formatted as SQL ids. See <a href="sqlsigil.html#id">id</a> for details.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code>sql`<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span>(${sql.keys({ <span class="hljs-keyword">name</span>: <span class="hljs-string">"joe"</span>, age: <span class="hljs-number">23</span> })) ...<span class="hljs-string">`
-// Becomes
-// `</span><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span>(<span class="hljs-string">"name"</span>, <span class="hljs-string">"age"</span>) ...<span class="hljs-string">`</span></code></pre>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`INSERT INTO users(<span class="hljs-subst">${sql.keys({ name: <span class="hljs-string">"joe"</span>, age: <span class="hljs-number">23</span> }</span>)) ...`</span>
+<span class="hljs-comment">// `INSERT INTO users("name", "age") ...`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -332,18 +323,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L119">sigil.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L105">sigil.ts:105</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Includes the provided string as raw, unescaped SQL.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code>const subQ = <span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users`
-<span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> (${<span class="hljs-keyword">sql</span>.raw(subQ)})`
-// Becomes
-// <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users)</code></pre>
+								<pre><code class="language-javascript"><span class="hljs-keyword">const</span> subQ = sql<span class="hljs-string">`SELECT * FROM users`</span>
+sql<span class="hljs-string">`SELECT COUNT(*) FROM (<span class="hljs-subst">${sql.raw(subQ)}</span>)`</span>
+<span class="hljs-comment">// SELECT COUNT(*) FROM (SELECT * FROM users)</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -365,7 +354,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L127">sigil.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L118">sigil.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -373,6 +362,8 @@
 									<p>Converts a date into a Postgres-formatted date string in the local
 									timezone.</p>
 								</div>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.tz(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>())}</span>`</span>
+<span class="hljs-comment">// `SELECT '2019-03-18T06:11:50.221+02:00'`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -397,7 +388,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L135">sigil.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L131">sigil.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,6 +396,8 @@
 									<p>Converts a date into a Postgres-formatted date string in the UTC
 									timezone.</p>
 								</div>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.tz(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>())}</span>`</span>
+<span class="hljs-comment">// `SELECT '2019-03-18T08:11:50.221+00:00'`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -429,42 +422,89 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L176">sigil.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L252">sigil.ts:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Converts a value into its Postgres-escaped equivalent. This is also
-									the default behavior for any values included in a given query string.</p>
+									<p>Converts a value into its Postgres-escaped equivalent.</p>
 								</div>
-								<p>Example:</p>
-								<pre><code><span class="hljs-keyword">sql</span>`<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = ${<span class="hljs-keyword">sql</span>.<span class="hljs-keyword">value</span>("James")}`
-// Becomes
-// <span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> = <span class="hljs-string">'James'</span></code></pre><p>Boolean values will be converted to TRUE/FALSE.
-									Undefined objects will be converted to NULL.
-									Null values will be converted to NULL.
-									Numbers will be converted to their Postgres equivalents, including
-									+Infinity, -Infinity, and NaN.
-									Arrays will be converted to Postgres array literals, with value
-									conversions applied to each array element.
-									Buffers will be converted to a hex-encoded
-									<a href="https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE">Postgres escape string</a>,
-									Date objects will be converted to a Postgres-compatible date string
-									according to the <a href="../globals.html#sigilopts">SigilOpts</a> <code>convertDate</code> option provided to build
-									the sql sigil (defaults to <a href="../globals.html#datetostringutc">dateToStringUTC</a>).
-								Objects will be converted given the following rules:</p>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT * FROM users WHERE name = <span class="hljs-subst">${sql.value(<span class="hljs-string">"James"</span>)}</span>`</span>
+<span class="hljs-comment">// `SELECT * FROM users WHERE name = 'James'`</span></code></pre>
+								<p>Note that this is exactly equivalent to including the value
+								directly:</p>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT * FROM users WHERE name = <span class="hljs-subst">${<span class="hljs-string">"James"</span>}</span>`</span></code></pre>
+								<p>Both will result in the same output. The <code>value</code> method is
+									included only for explicitness, if desired. Conversion
+								rules are as follows:</p>
 								<ul>
-									<li>If the object has a <code>toPostgres</code> function, that function will be
-										called. If the object also has a <code>rawType</code> attribute set to true,
-										then the results of the <code>toPostgres</code> call will be included as
-										a raw string. Otherwise, the results of that call will be
-									processed as any other normal value</li>
-									<li>The above also applies if the object has the
-										<code>Symbol.for(&#39;ctf.toPostgres&#39;)</code> and <code>Symbol.for(&#39;ctf.rawType&#39;)</code>
-									attributes defined.</li>
-									<li>Otherwise, the object will be converted via the <a href="../globals.html#sigilopts">SigilOpts</a>
-										<code>convertObject</code> attribute used to build the SQL sigil. Defaults to
-									<code>JSON.stringify</code></li>
+									<li><p>Strings will be escaped.</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${<span class="hljs-string">"Jim's Crab Shack"</span>}</span>`</span>
+<span class="hljs-comment">// `SELECT 'Jim''s Crab Shack'`</span></code></pre>
+									</li>
+									<li><p>Boolean values will be converted to TRUE/FALSE.</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${<span class="hljs-literal">true</span>}</span>, <span class="hljs-subst">${<span class="hljs-literal">false</span>}</span>`</span>
+<span class="hljs-comment">// `SELECT TRUE, FALSE`</span></code></pre>
+									</li>
+									<li><p>Undefined objects will be converted to NULL.</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${<span class="hljs-literal">undefined</span>}</span>`</span>
+<span class="hljs-comment">// `SELECT NULL`</span></code></pre>
+									</li>
+									<li><p>Null values will be converted to NULL.</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${<span class="hljs-literal">null</span>}</span>`</span>
+<span class="hljs-comment">// `SELECT NULL`</span></code></pre>
+									</li>
+									<li><p>Numbers will be converted to their Postgres equivalents, including
+										+Infinity, -Infinity, and NaN.</p>
+										<pre><code class="language-javascript">sql`SELECT ${10}, ${1.2}, ${Infinity}, ${0/0}`
+// `SELECT 10, 1.2, &#39;+Infinity&#39;, &#39;NaN&#39;`</code></pre>
+									</li>
+									<li><p>Arrays will be converted to Postgres array literals, with value
+										conversions applied to each array element.</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${[<span class="hljs-number">0</span>, <span class="hljs-string">"X"</span>, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()]}</span>`</span>
+<span class="hljs-comment">// `SELECT {0, 'X', '2019-03-18T08:11:50.221+00:00'}`</span></code></pre>
+									</li>
+									<li><p>Buffers will be converted to a hex-encoded
+										<a href="https://www.postgresql.org/docs/9.2/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE">Postgres escape string</a>,</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${Buffer.<span class="hljs-keyword">from</span>(<span class="hljs-string">'abc'</span>)}</span>`</span>
+<span class="hljs-comment">// `SELECT E'\\x616263'`</span></code></pre>
+									</li>
+									<li><p>Date objects will be converted to a Postgres-compatible date string
+											according to the <a href="../globals.html#sigilopts">SigilOpts</a> <code>convertDate</code> option provided to build
+										the sql sigil (defaults to <a href="../globals.html#datetostringutc">dateToStringUTC</a>).</p>
+										<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()}</span>`</span>
+<span class="hljs-comment">// `SELECT '2019-03-18T08:11:50.221+00:00'`</span></code></pre>
+									</li>
+									<li><p>Objects will be converted given the following rules:</p>
+										<ul>
+											<li><p>If the object has a <code>toPostgres</code> function, that function will be
+													called. If the object also has a <code>rawType</code> attribute set to true,
+													then the results of the <code>toPostgres</code> call will be included as
+													a raw string. Otherwise, the results of that call will be
+												processed as any other normal value</p>
+												<pre><code class="language-javascript"><span class="hljs-keyword">const</span> cooked = { <span class="hljs-attr">toPostgres</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"str"</span> }
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${cooked}</span>`</span>
+<span class="hljs-comment">// `SELECT 'str'`</span>
+
+<span class="hljs-keyword">const</span> raw = { <span class="hljs-attr">toPostgres</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"str"</span>, <span class="hljs-attr">rawType</span>: <span class="hljs-literal">true</span> }
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${raw}</span>`</span>
+<span class="hljs-comment">// `SELECT str`</span></code></pre>
+												<p>The above also applies if the object has the
+													<code>Symbol.for(&#39;ctf.toPostgres&#39;)</code> and <code>Symbol.for(&#39;ctf.rawType&#39;)</code>
+													attributes defined. (See <a href="../globals.html#topostgres">toPostgres</a> and <a href="../globals.html#rawtype">rawType</a>, which
+												are importable symbols.)</p>
+												<pre><code class="language-javascript"><span class="hljs-keyword">const</span> raw = { [toPostgres]: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">"str"</span>, [rawType]: <span class="hljs-literal">true</span> }
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${raw}</span>`</span>
+<span class="hljs-comment">// `SELECT str`</span></code></pre>
+											</li>
+											<li><p>Otherwise, the object will be converted via the <a href="../globals.html#sigilopts">SigilOpts</a>
+													<code>convertObject</code> attribute used to build the SQL sigil. Defaults to
+												<code>JSON.stringify</code></p>
+												<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${{ name: <span class="hljs-string">"John's Chili Stop"</span> }</span>}`</span>
+<span class="hljs-comment">// `SELECT '{"name": "John''s Chili Stop"}'`</span></code></pre>
+											</li>
+										</ul>
+									</li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -490,7 +530,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/514f7d4/src/sigil.ts#L190">sigil.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/375a993/src/sigil.ts#L267">sigil.ts:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -500,10 +540,8 @@
 									to the rules of <a href="sqlsigil.html#value">value</a>.</p>
 								</div>
 								<p>Example:</p>
-								<p><code>`</code>
-									sql`INSERT INTO users(name, age) VALUES(${sql.values({ name: &quot;John&quot;, age: 23 }))
-									// Becomes
-								// INSERT INTO users(name, age) VALUES(&#39;John&#39;, 23)</p>
+								<pre><code class="language-javascript">sql<span class="hljs-string">`INSERT INTO users(name, age) VALUES(<span class="hljs-subst">${sql.values({ name: <span class="hljs-string">"John"</span>, age: <span class="hljs-number">23</span> }</span>))
+// `</span>INSERT INTO users(name, age) VALUES(<span class="hljs-string">'John'</span>, <span class="hljs-number">23</span>)<span class="hljs-string">`</span></code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">

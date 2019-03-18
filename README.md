@@ -62,12 +62,13 @@ function insertUserSql(userObj) {
 //   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`
 ```
 
+See the [documentation](https://twooster.github.io/sqigil) for a full list
+of available formatting options. Of primary interest are the conversion
+methods listed in [SqlSigil](file:///home/tony/projects/sqigil/docs/interfaces/sqlsigil.html).
+
 Note that value-conversions are compatible with the interface defined
 by `pg-promise`. That means there is full support for `toPostgres`/`rawType`
 object properties (both strings and symbols).
-
-See the [documentation](https://twooster.github.io/sqigil) for a full list
-of available formatting options.
 
 ## License
 

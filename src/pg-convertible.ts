@@ -30,7 +30,7 @@ export interface PgConvertible {
 
 /**
  * A [[PgConvertible]] instance that returns a raw string. That means
- * the `Symbol.flor('ctf.rawType')` attribute must return `true`.
+ * the `Symbol.for('ctf.rawType')` attribute must return `true`.
  */
 export interface PgSafeString extends PgConvertible {
   /** @hidden */
