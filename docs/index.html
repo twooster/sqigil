@@ -87,34 +87,167 @@
 					and fast string templating. This project is an attempt to implement such
 				a solution.</p>
 				<h2 id="usage">Usage</h2>
-				<p>Examples:</p>
+				<h3 id="quick-reference">Quick Reference</h3>
+				<p>The standard form for producing SQL strings is:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { sql } <span class="hljs-keyword">from</span> <span class="hljs-string">'sqigil'</span>
 
-<span class="hljs-keyword">const</span> usersTbl = <span class="hljs-string">'users'</span>
+<span class="hljs-comment">// Bare value inclusion:</span>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUserByIdSql</span>(<span class="hljs-params">id</span>) </span>{
-  <span class="hljs-keyword">return</span> sql<span class="hljs-string">`SELECT * FROM <span class="hljs-subst">${sql.id(usersTbl)}</span> WHERE id = <span class="hljs-subst">${id}</span>`</span>;
-}
-<span class="hljs-comment">// e.g., getUserByIdSql(123) ===</span>
-<span class="hljs-comment">//  'SELECT * FROM "users" WHERE id = 123'</span>
+sql<span class="hljs-string">`SELECT * FROM users WHERE name = <span class="hljs-subst">${<span class="hljs-string">"O'Connor"</span>}</span>`</span>
+<span class="hljs-comment">// Or:</span>
+sql<span class="hljs-string">`SELECT * FROM users WHERE name = <span class="hljs-subst">${sql.value(<span class="hljs-string">"O'Connor"</span>)}</span>`</span>
+<span class="hljs-comment">// "SELECT * FROM users WHERE name = 'O''Connor'"</span>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUserByNameSql</span>(<span class="hljs-params">name</span>) </span>{
-  <span class="hljs-keyword">return</span> sql<span class="hljs-string">`SELECT * FROM <span class="hljs-subst">${sql.id(usersTbl)}</span> WHERE name= <span class="hljs-subst">${name}</span>`</span>;
-}
-<span class="hljs-comment">// e.g., getUserByNameSql("john'; DROP TABLE users") ===</span>
-<span class="hljs-comment">//  `SELECT * FROM "users" WHERE name = 'john''; DROP TABLE users'`</span>
+<span class="hljs-comment">// Explicit conversion:</span>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insertUserSql</span>(<span class="hljs-params">userObj</span>) </span>{
-  <span class="hljs-keyword">return</span> sql<span class="hljs-string">`INSERT INTO <span class="hljs-subst">${sql.id(usersTbl)}</span>(<span class="hljs-subst">${sql.keys(userObj)}</span>) VALUES(<span class="hljs-subst">${sql.values(userObj)}</span>)`</span>;
-}
-<span class="hljs-comment">// e.g., insertUserSql({ id: 123, name: "John Smith", age: 23 }) ===</span>
-<span class="hljs-comment">//   `INSERT INTO "users"("id", "name", "age") VALUES(123, 'John Smith', 23)`</span></code></pre>
+sql<span class="hljs-string">`SELECT * FROM users WHERE id IN (<span class="hljs-subst">${sql.csv([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])}</span>)`</span>
+<span class="hljs-comment">// "SELECT * FROM users WHERE id IN (1, 2, 3, 4)"</span>
+
+sql<span class="hljs-string">`SELECT * FROM users WHERE active = <span class="hljs-subst">${sql.bool(<span class="hljs-string">'yes'</span>)}</span>`</span>
+<span class="hljs-comment">// "SELECT * FROM users WHERE active = TRUE`</span>
+
+<span class="hljs-keyword">const</span> user = { <span class="hljs-attr">name</span>: <span class="hljs-string">"John"</span>, <span class="hljs-attr">active</span>: <span class="hljs-literal">false</span> }
+sql<span class="hljs-string">`INSERT INTO users(<span class="hljs-subst">${sql.keys(user)}</span>) VALUES (<span class="hljs-subst">${sql.values(user)}</span>)`</span>
+<span class="hljs-comment">// `INSERT INTO users("name", "active") VALUES ('John', FALSE)`</span>
+
+sql<span class="hljs-string">`SELECT * FROM <span class="hljs-subst">${sql.id(<span class="hljs-string">'users'</span>)}</span>`</span>
+<span class="hljs-comment">// `SELECT * FROM "users"`</span>
+
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.csids([<span class="hljs-string">'name'</span>, <span class="hljs-string">'active'</span>])}</span> FROM users`</span>
+<span class="hljs-comment">// `SELECT "name", "active" FROM users`</span>
+
+sql<span class="hljs-string">`SELECT * FROM (<span class="hljs-subst">${sql.raw(<span class="hljs-string">'SELECT * FROM users'</span>)}</span>)`</span>
+<span class="hljs-comment">// `SELECT * FROM (SELECT * FROM users)`</span></code></pre>
+				<h3 id="conversion-operators">Conversion Operators</h3>
+				<h4 id="sql-value-or-just-plain-value"><code>sql.value</code> or just <code>&lt;plain value&gt;</code></h4>
+				<p>An escaped Postgres value, dependent on input type.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Data Type</th>
+							<th>Conversion</th>
+							<th>JS Input</th>
+							<th>SQL Output</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>string</td>
+							<td>SQL string literal</td>
+							<td><code>&quot;It&#39;s nice!&quot;</code></td>
+							<td><code>&#39;It&#39;&#39;s nice!&#39;</code></td>
+						</tr>
+						<tr>
+							<td>boolean</td>
+							<td>SQL boolean literal</td>
+							<td><code>true</code></td>
+							<td><code>TRUE</code></td>
+						</tr>
+						<tr>
+							<td>null</td>
+							<td>SQL NULL</td>
+							<td><code>null</code></td>
+							<td><code>NULL</code></td>
+						</tr>
+						<tr>
+							<td>undefined</td>
+							<td>SQL NULL</td>
+							<td><code>undefined</code></td>
+							<td><code>NULL</code></td>
+						</tr>
+						<tr>
+							<td>number</td>
+							<td>SQL number literal (escaped in some instances)</td>
+							<td><code>10</code>, <code>1.2</code>, <code>Infinity</code>, <code>NaN</code></td>
+							<td><code>10</code>, <code>1.2</code>, <code>&#39;+Infinity&#39;</code>, <code>&#39;NaN&#39;</code></td>
+						</tr>
+						<tr>
+							<td>array</td>
+							<td>SQL array, each element escaped</td>
+							<td><code>[1, &#39;Green&#39;, [true, false]]</code></td>
+							<td><code>{1, &#39;Green&#39;, {TRUE, FALSE}}</code></td>
+						</tr>
+						<tr>
+							<td>Date</td>
+							<td>SQL date in UTC</td>
+							<td><code>new Date()</code></td>
+							<td><code>&#39;2019-03-18T08:11:50.221+00:00&#39;</code></td>
+						</tr>
+						<tr>
+							<td>Buffer</td>
+							<td>Hex-encoded Postgres escape-string</td>
+							<td><code>Buffer.from(&#39;abc&#39;)</code></td>
+							<td><code>E&#39;\\x616263&#39;</code></td>
+						</tr>
+						<tr>
+							<td>object</td>
+							<td>JSON-encoded SQL string</td>
+							<td><code>{ a: 1, b: &quot;2&quot; }</code></td>
+							<td><code>{&quot;a&quot;:1,&quot;b&quot;:&quot;2&quot;}</code></td>
+						</tr>
+						<tr>
+							<td>Symbol</td>
+							<td>error</td>
+							<td><code>Symbol(&#39;sym&#39;)</code></td>
+							<td>Throws an error</td>
+						</tr>
+				</tbody></table>
+				<p>Additionally, objects can have a <code>toPostgres</code> (or <code>Symbol.for(&#39;ctf.toPostgres&#39;)</code>)
+					symbol defined on them, which -- if present and a function -- should return
+					the value that should be used instead. The value returned from this method
+					will be escaped as usual, <strong>unless</strong> <code>rawType</code> is defined on the object (or
+					<code>Symbol.for(&#39;ctf.rawType&#39;)</code>) and set to truthy. In that case, the value from
+					<code>toPostgres</code> is expected to be a <code>string</code>, and will treated as already
+				escaped and no processing will occur.</p>
+				<p>(This feature is built to roughly concur with the interface defined by
+				<code>pg-promise</code>.)</p>
+				<h4 id="sql-bool"><code>sql.bool</code></h4>
+				<p><strong>Outputs:</strong> Converts input value to a SQL boolean based upon Javascript
+				truthiness rules</p>
+				<pre><code class="language-javascript">sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.bool(<span class="hljs-literal">null</span>)}</span>, <span class="hljs-subst">${sql.bool(<span class="hljs-string">''</span>)}</span>, <span class="hljs-subst">${sql.bool(<span class="hljs-string">'bob'</span>)}</span>`</span>
+<span class="hljs-comment">// SELECT FALSE, FALSE, TRUE</span></code></pre>
+				<h4 id="sql-utc-sql-tz"><code>sql.utc</code>, <code>sql.tz</code></h4>
+				<p><strong>Outputs:</strong> A SQL date literal. Converts the provided date (must be a date) in
+				the timezone of the local machine (<code>sql.tz</code>) or in UTC (<code>sql.utc</code>):</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> date = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.tz(date)}</span>, <span class="hljs-subst">${sql.utc(date)}</span>`</span>
+<span class="hljs-comment">// SELECT '2019-03-18T08:11:50.221+02:00', '2019-03-18T08:09:50.221+00:00'</span></code></pre>
+				<h4 id="sql-csv"><code>sql.csv</code></h4>
+				<p><strong>Outputs:</strong> Comma-separated SQL values, each escaped according to its type
+				(see <code>sql.value</code>):</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> userIds = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+sql<span class="hljs-string">`SELECT * FROM users WHERE id IN (<span class="hljs-subst">${sql.csv(userIds)}</span>)`</span>
+<span class="hljs-comment">// SELECT * FROM users WHERE id IN (1, 2, 3)</span></code></pre>
+				<h4 id="sql-csids"><code>sql.csids</code></h4>
+				<p><strong>Outputs:</strong> Comma-separated list, with each value escaped as though it is a
+				SQL identifier:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> cols = [<span class="hljs-string">'name'</span>, <span class="hljs-string">'join_date'</span>]
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.csids(cols)}</span> FROM users`</span>
+<span class="hljs-comment">// SELECT "name", "join_date" FROM users`</span></code></pre>
+				<h4 id="sql-id"><code>sql.id</code></h4>
+				<p><strong>Outputs:</strong> A single SQL identifier name.  Also accepts arrays for
+				dot-separated names:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> col = <span class="hljs-string">'name'</span>
+<span class="hljs-keyword">const</span> otherCol = [<span class="hljs-string">'interests'</span>, <span class="hljs-string">'description'</span>]
+
+sql<span class="hljs-string">`SELECT <span class="hljs-subst">${sql.id(col)}</span>, <span class="hljs-subst">${sql.id(otherCol)}</span> FROM users, interests`</span>
+<span class="hljs-comment">// SELECT "name", "interests"."description" FROM users, interests</span></code></pre>
+				<h4 id="sql-keys-sql-values"><code>sql.keys</code>, <code>sql.values</code></h4>
+				<p><strong>Outputs:</strong></p>
+				<p>A comma separated list of SQL identifiers (for <code>sql.keys</code>) or escaped values
+				(for <code>sql.values</code>), from the provided object:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> user = { <span class="hljs-attr">name</span>: <span class="hljs-string">"John"</span> }
+
+sql<span class="hljs-string">`INSERT INTO users(<span class="hljs-subst">${sql.keys(user)}</span>) VALUES (<span class="hljs-subst">${sql.values(user)}</span>)`</span>
+<span class="hljs-comment">// INSERT INTO users("name") VALUES ('John')</span></code></pre>
+				<h4 id="sql-raw"><code>sql.raw</code></h4>
+				<p>The provided string (must be a string) with no escaping:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> subQuery = <span class="hljs-string">`SELECT * FROM bands WHERE genre = "punk"`</span>
+sql<span class="hljs-string">`WITH punk_bands AS (<span class="hljs-subst">${sql.raw(subQuery)}</span>) SELECT * FROM punk_bands WHERE country2 = <span class="hljs-subst">${<span class="hljs-string">"US"</span>}</span>`</span>
+<span class="hljs-comment">// WITH punk_bands AS (SELECT * FROM bands WHERE genre = "punk") SELECT * FROM punk_bands WHERE country2 = 'US'</span></code></pre>
+				<h2 id="more-detailed-documentation">More Detailed Documentation</h2>
 				<p>See the <a href="https://tonywooster.com/sqigil">documentation</a> for a full list
 					of available formatting options. Of primary interest are the conversion
 				methods listed in <a href="https://tonywooster.com/sqigil/interfaces/sqlsigil.html">SqlSigil</a>.</p>
-				<p>Note that value-conversions are compatible with the interface defined
-					by <code>pg-promise</code>. That means there is full support for <code>toPostgres</code>/<code>rawType</code>
-				object properties (both strings and symbols).</p>
 				<h2 id="license">License</h2>
 				<p>MIT, available <a href="https://github.com/twooster/sqigil/blob/master/LICENSE">here</a>.</p>
 			</div>
