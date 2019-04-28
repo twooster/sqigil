@@ -58,3 +58,33 @@ test('date strings', () => {
   expect(dateToString(d4)).toEqual('0002-10-11T12:13:14.015+00:00')
   expect(dateToString(d4)).toEqual('0002-10-11T12:13:14.015+00:00')
 })
+
+test('bc years', () => {
+  const d1 = mockDate({
+    year: 0,
+    month: 0,
+    day: 22,
+    hours: 14,
+    minutes: 23,
+    seconds: 45,
+    millis: 221,
+    tzOffset: 120
+  })
+
+  expect(dateToString(d1)).toEqual('0001-01-22T14:23:45.221-02:00 BC')
+  expect(dateToStringUTC(d1)).toEqual('0001-01-22T14:23:45.221+00:00 BC')
+
+  const d2 = mockDate({
+    year: -199,
+    month: 0,
+    day: 22,
+    hours: 14,
+    minutes: 23,
+    seconds: 45,
+    millis: 221,
+    tzOffset: 120
+  })
+
+  expect(dateToString(d2)).toEqual('0200-01-22T14:23:45.221-02:00 BC')
+  expect(dateToStringUTC(d2)).toEqual('0200-01-22T14:23:45.221+00:00 BC')
+})

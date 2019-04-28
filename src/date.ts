@@ -60,7 +60,13 @@ export function dateToString (date: Date): string {
     sign = '+'
   }
 
-  return pad4(date.getFullYear()) + '-' +
+  let year = date.getFullYear()
+  const bcYear = year < 1
+  if (bcYear) {
+    year = -year + 1 // No 0 years -- 2 BC, 1 BC, 1 AD, etc
+  }
+
+  return pad4(year) + '-' +
     pad2(date.getMonth() + 1) + '-' +
     pad2(date.getDate()) + 'T' +
     pad2(date.getHours()) + ':' +
@@ -68,7 +74,8 @@ export function dateToString (date: Date): string {
     pad2(date.getSeconds()) + '.' +
     pad3(date.getMilliseconds()) + sign +
     pad2(Math.floor(offset / 60)) + ':' +
-    pad2(offset % 60)
+    pad2(offset % 60) +
+    (bcYear ? ' BC' : '')
 }
 
 /**
@@ -79,12 +86,19 @@ export function dateToString (date: Date): string {
  * @returns Postgres-compatible date string in UTC timezone
  */
 export function dateToStringUTC (date: Date): string {
-  return pad4(date.getUTCFullYear()) + '-' +
+  let year = date.getUTCFullYear()
+  const bcYear = year < 1
+  if (bcYear) {
+    year = -year + 1 // No 0 years -- 2 BC, 1 BC, 1 AD, etc
+  }
+
+  return pad4(year) + '-' +
     pad2(date.getUTCMonth() + 1) + '-' +
     pad2(date.getUTCDate()) + 'T' +
     pad2(date.getUTCHours()) + ':' +
     pad2(date.getUTCMinutes()) + ':' +
     pad2(date.getUTCSeconds()) + '.' +
     pad3(date.getUTCMilliseconds()) +
-    "+00:00"
+    '+00:00' +
+    (bcYear ? ' BC' : '')
 }
