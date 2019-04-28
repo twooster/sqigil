@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PgSafeString | sqigil</title>
+	<title>SafeString | sqigil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,29 +56,21 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="pgsafestring.html">PgSafeString</a>
+					<a href="safestring.html">SafeString</a>
 				</li>
 			</ul>
-			<h1>Interface PgSafeString</h1>
+			<h1>Interface SafeString</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A [[PgConvertible]] instance that returns a raw string. That means
-						the <code>Symbol.for(&#39;ctf.rawType&#39;)</code> attribute must return <code>true</code>.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PgSafeString</span>
+						<span class="target">SafeString</span>
 					</li>
 				</ul>
 			</section>
@@ -89,8 +81,9 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="pgsafestring.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="pgsafestring.html#valueof" class="tsd-kind-icon">value<wbr>Of</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="safestring.html#__computed" class="tsd-kind-icon">__computed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="safestring.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="safestring.html#valueof" class="tsd-kind-icon">value<wbr>Of</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,12 +92,23 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="__computed" class="tsd-anchor"></a>
+					<h3>__computed</h3>
+					<div class="tsd-signature tsd-kind-icon">__computed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/safe-string.ts#L4">safe-string.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/safe-string.ts#L5">safe-string.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
 					<div class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/safe-string.ts#L11">safe-string.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/safe-string.ts#L6">safe-string.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -129,7 +133,7 @@
 					<div class="tsd-signature tsd-kind-icon">value<wbr>Of<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/safe-string.ts#L12">safe-string.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/safe-string.ts#L7">safe-string.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -175,13 +179,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a>
+						<a href="safestring.html" class="tsd-kind-icon">Safe<wbr>String</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="pgsafestring.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+								<a href="safestring.html#__computed" class="tsd-kind-icon">__computed</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="pgsafestring.html#valueof" class="tsd-kind-icon">value<wbr>Of</a>
+								<a href="safestring.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="safestring.html#valueof" class="tsd-kind-icon">value<wbr>Of</a>
 							</li>
 						</ul>
 					</li>

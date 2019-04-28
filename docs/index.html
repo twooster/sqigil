@@ -64,16 +64,18 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="sqigil-a-postgres-sql-template-string-for-javascript">SQigiL: A Postgres SQL template string for Javascript</h1>
-				<p><a href="https://circleci.com/gh/twooster/sqigil"><img src="https://circleci.com/gh/twooster/sqigil.svg?style=svg" alt="CircleCI"></a>
-				<a href="https://coveralls.io/github/twooster/sqigil"><img src="https://coveralls.io/repos/github/twooster/sqigil/badge.svg" alt="Coverage Status"></a></p>
+				<h1 id="sqigil-a-postgres-sql-template-string-for-javascript"><a href="https://github.com/twooster/sqigil">SQigiL</a>: A Postgres SQL template string for Javascript</h1>
+				<p><a href="https://circleci.com/gh/twooster/sqigil"><img src="https://img.shields.io/circleci/project/github/twooster/sqigil/master.svg" alt="CircleCI"></a>
+				<a href="https://coveralls.io/github/twooster/sqigil"><img src="https://img.shields.io/coveralls/github/twooster/sqigil.svg" alt="Coverage Status"></a></p>
 				<p>This project provides an easy-to-use, safe, SQL string templating
 					solution. It&#39;s built to work with
 				<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">ES2015 template strings</a>.</p>
 				<p>This project is built in Typescript, and will maintain 100% test
 				coverage.</p>
 				<p>Disclaimer: This project is still pretty new. I&#39;m fairly confident in
-				its safety, but for now, you&#39;re a beta user.</p>
+					its safety, but for now, you&#39;re a beta user. Please feel free to
+					<a href="https://github.com/twooster/sqigil/issues">create an issue</a> (or a pull
+				request) if you find any bugs.</p>
 				<h2 id="installation">Installation</h2>
 				<pre><code class="language-sh">npm install --save sqigil</code></pre>
 				<h2 id="documentation">Documentation</h2>
@@ -176,18 +178,24 @@ sql<span class="hljs-string">`SELECT * FROM (<span class="hljs-subst">${sql.raw(
 							<td>Buffer</td>
 							<td>Hex-encoded Postgres escape-string</td>
 							<td><code>Buffer.from(&#39;abc&#39;)</code></td>
-							<td><code>E&#39;\\x616263&#39;</code></td>
+							<td><code>E&#39;\x616263&#39;</code></td>
 						</tr>
 						<tr>
 							<td>object</td>
 							<td>JSON-encoded SQL string</td>
-							<td><code>{ a: 1, b: &quot;2&quot; }</code></td>
-							<td><code>{&quot;a&quot;:1,&quot;b&quot;:&quot;2&quot;}</code></td>
+							<td><code>{ a: &quot;Doc&#39;&quot;, b: &quot;2&quot; }</code></td>
+							<td><code>&#39;{&quot;a&quot;:&quot;Doc&#39;&#39;&quot;,&quot;b&quot;:&quot;2&quot;&#39;}</code></td>
 						</tr>
 						<tr>
 							<td>Symbol</td>
 							<td>error</td>
 							<td><code>Symbol(&#39;sym&#39;)</code></td>
+							<td>Throws an error</td>
+						</tr>
+						<tr>
+							<td>Function</td>
+							<td>error</td>
+							<td><code>() =&gt; &#39;Anything&#39;</code></td>
 							<td>Throws an error</td>
 						</tr>
 				</tbody></table>
@@ -311,6 +319,36 @@ sql<span class="hljs-string">`INSERT INTO hstore_tbl(attrs) VALUES (<span class=
 <span class="hljs-comment">// Exactly the same as:</span>
 sql<span class="hljs-string">`INSERT INTO words (word) VALUES (<span class="hljs-subst">${<span class="hljs-string">"John O'Connor"</span>}</span>)`</span></code></pre>
 				<p>Using the <code>sql</code> leader allows safe bare value inclusion.</p>
+				<h2 id="custom-templating">Custom Templating</h2>
+				<p>You can customize the templater in two ways:</p>
+				<ul>
+					<li>Custom date formatting (defaults to UTC)</li>
+					<li>Custom object formatting (defaults to <code>JSON.stringify</code>)</li>
+				</ul>
+				<p>How? Simple:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { sql, makeSigil, makeSafeString } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'sqigil'</span>)
+
+<span class="hljs-keyword">const</span> customSql = makeSigil({
+  <span class="hljs-comment">// Will not be escaped</span>
+  convertDate: <span class="hljs-function">(<span class="hljs-params">date</span>) =&gt;</span> makeSafeString(<span class="hljs-string">'DATE!'</span>),
+  convertObject(obj) {
+    <span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> MySpecialObj) {
+      <span class="hljs-comment">// Will be escaped as a string</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify({
+        <span class="hljs-attr">theName</span>: obj.getName()
+      })
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// Will be escaped as a string</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">JSON</span>.stringify(obj)
+    }
+  }
+})
+
+customSql<span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">new</span> MySpecialObj({ name: <span class="hljs-string">"John"</span> }</span>)}`</span>
+<span class="hljs-comment">// `'{"theName":"John"}'`</span>
+
+customSql<span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()}</span>`</span>
+<span class="hljs-comment">// `DATE!`</span></code></pre>
 				<h2 id="more-detailed-documentation">More Detailed Documentation</h2>
 				<p>See the <a href="https://tonywooster.com/sqigil">documentation</a> for a full list
 					of available formatting options. Of primary interest are the conversion
@@ -342,7 +380,7 @@ sql<span class="hljs-string">`INSERT INTO words (word) VALUES (<span class="hljs
 						<a href="interfaces/objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a>
+						<a href="interfaces/safestring.html" class="tsd-kind-icon">Safe<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/sqlsigil.html" class="tsd-kind-icon">Sql<wbr>Sigil</a>

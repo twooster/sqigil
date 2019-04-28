@@ -79,7 +79,7 @@
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/conversionopts.html" class="tsd-kind-icon">Conversion<wbr>Opts</a></li>
 								<li class="tsd-kind-interface tsd-is-external tsd-is-not-exported"><a href="interfaces/dateconversionfn.html" class="tsd-kind-icon">Date<wbr>Conversion<wbr>Fn</a></li>
 								<li class="tsd-kind-interface tsd-is-external tsd-is-not-exported"><a href="interfaces/objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a></li>
-								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/safestring.html" class="tsd-kind-icon">Safe<wbr>String</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/sqlsigil.html" class="tsd-kind-icon">Sql<wbr>Sigil</a></li>
 							</ul>
 						</section>
@@ -123,7 +123,7 @@
 					<div class="tsd-signature tsd-kind-icon">raw<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol.for(&#x27;ctf.rawType&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/symbols.ts#L11">symbols.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/symbols.ts#L11">symbols.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -136,10 +136,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
 					<a name="sql" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> sql</h3>
-					<div class="tsd-signature tsd-kind-icon">sql<span class="tsd-signature-symbol">:</span> <a href="interfaces/sqlsigil.html" class="tsd-signature-type">SqlSigil</a><span class="tsd-signature-symbol"> =&nbsp;makeSigil({convertDate: dateToStringUTC,convertObject: JSON.stringify})</span></div>
+					<div class="tsd-signature tsd-kind-icon">sql<span class="tsd-signature-symbol">:</span> <a href="interfaces/sqlsigil.html" class="tsd-signature-type">SqlSigil</a><span class="tsd-signature-symbol"> =&nbsp;makeSigil({convertDate: dateToStringUTC,convertObject: JSON.stringify,})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L409">sigil.ts:409</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L413">sigil.ts:413</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -160,7 +160,7 @@
 					<div class="tsd-signature tsd-kind-icon">to<wbr>Postgres<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof symbol</span><span class="tsd-signature-symbol"> =&nbsp;Symbol.for(&#x27;ctf.toPostgres&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/symbols.ts#L6">symbols.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/symbols.ts#L6">symbols.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -178,13 +178,13 @@
 					<a name="bool" class="tsd-anchor"></a>
 					<h3>bool</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">bool<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">bool<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L337">sigil.ts:337</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L337">sigil.ts:337</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -193,7 +193,7 @@
 									<h5>val: <span class="tsd-signature-type">unknown</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -201,13 +201,13 @@
 					<a name="csids" class="tsd-anchor"></a>
 					<h3>csids</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">csids<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">csids<span class="tsd-signature-symbol">(</span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L345">sigil.ts:345</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L345">sigil.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,7 +216,7 @@
 									<h5>ids: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -224,13 +224,13 @@
 					<a name="csv" class="tsd-anchor"></a>
 					<h3>csv</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">csv<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, vals<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">csv<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, vals<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L341">sigil.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L341">sigil.ts:341</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -242,7 +242,7 @@
 									<h5>vals: <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -256,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/date.ts#L53">date.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/date.ts#L53">date.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,7 +289,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/date.ts#L88">date.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/date.ts#L88">date.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,14 +317,14 @@
 					<h3>id</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">never</span></li>
-						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
-						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span>first<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>rest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span>first<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>rest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L294">sigil.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L294">sigil.ts:294</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -338,7 +338,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L295">sigil.ts:295</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L295">sigil.ts:295</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -347,12 +347,12 @@
 									<h5>arr: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L296">sigil.ts:296</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L296">sigil.ts:296</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,7 +364,7 @@
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>rest: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -372,13 +372,13 @@
 					<a name="keys" class="tsd-anchor"></a>
 					<h3>keys</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">keys<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">keys<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L325">sigil.ts:325</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L325">sigil.ts:325</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -392,7 +392,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -400,18 +400,18 @@
 					<a name="makesafestring" class="tsd-anchor"></a>
 					<h3>make<wbr>Safe<wbr>String</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">make<wbr>Safe<wbr>String<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">make<wbr>Safe<wbr>String<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/safe-string.ts#L23">safe-string.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/safe-string.ts#L18">safe-string.ts:18</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Builds a PgSafeString object given an assumed-safe string.
+									<p>Builds a SafeString object given an assumed-safe string.
 										The resulting object can also be <code>toString</code>d to return its
 									raw contents.</p>
 								</div>
@@ -425,8 +425,8 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
-							<p>a PgSafeString object</p>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
+							<p>a SafeString object</p>
 						</li>
 					</ul>
 				</section>
@@ -440,7 +440,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L381">sigil.ts:381</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L385">sigil.ts:385</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -466,13 +466,13 @@
 					<a name="raw" class="tsd-anchor"></a>
 					<h3>raw</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">raw<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">raw<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L290">sigil.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L290">sigil.ts:290</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -481,7 +481,7 @@
 									<h5>value: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -495,7 +495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L363">sigil.ts:363</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L363">sigil.ts:363</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -524,7 +524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/to-literal.ts#L161">to-literal.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/to-literal.ts#L174">to-literal.ts:174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -557,13 +557,13 @@
 					<a name="tz" class="tsd-anchor"></a>
 					<h3>tz</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">tz<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">tz<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L321">sigil.ts:321</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L321">sigil.ts:321</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -572,7 +572,7 @@
 									<h5>val: <span class="tsd-signature-type">Date</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -580,13 +580,13 @@
 					<a name="utc" class="tsd-anchor"></a>
 					<h3>utc</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">utc<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">utc<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L317">sigil.ts:317</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L317">sigil.ts:317</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -595,7 +595,7 @@
 									<h5>val: <span class="tsd-signature-type">Date</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -603,13 +603,13 @@
 					<a name="value" class="tsd-anchor"></a>
 					<h3>value</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L359">sigil.ts:359</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L359">sigil.ts:359</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -621,7 +621,7 @@
 									<h5>val: <span class="tsd-signature-type">unknown</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -629,13 +629,13 @@
 					<a name="values" class="tsd-anchor"></a>
 					<h3>values</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></li>
+						<li class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">: </span><a href="interfaces/conversionopts.html" class="tsd-signature-type">ConversionOpts</a>, val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/6ae2ed8/src/sigil.ts#L331">sigil.ts:331</a></li>
+									<li>Defined in <a href="https://github.com/twooster/sqigil/blob/d39dfd2/src/sigil.ts#L331">sigil.ts:331</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -652,7 +652,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/pgsafestring.html" class="tsd-signature-type">PgSafeString</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/safestring.html" class="tsd-signature-type">SafeString</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -681,7 +681,7 @@
 						<a href="interfaces/objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a>
+						<a href="interfaces/safestring.html" class="tsd-kind-icon">Safe<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/sqlsigil.html" class="tsd-kind-icon">Sql<wbr>Sigil</a>
