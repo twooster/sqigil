@@ -92,20 +92,6 @@ An escaped Postgres value, dependent on input type.
 | Symbol | error | `Symbol('sym')` | Throws an error |
 
 
-
-Additionally, objects can have a `toPostgres` (or `Symbol.for('ctf.toPostgres')`)
-symbol defined on them, which -- if present and a function -- should return
-the value that should be used instead. The value returned from this method
-will be escaped as usual, **unless** `rawType` is defined on the object (or
-`Symbol.for('ctf.rawType')`) and set to truthy. In that case, the value from
-`toPostgres` is expected to be a `string`, and will treated as already
-escaped and no processing will occur.
-
-
-(This feature is built to roughly concur with the interface defined by
-`pg-promise`.)
-
-
 #### `sql.bool`
 
 **Outputs:** Converts input value to a SQL boolean based upon Javascript
@@ -185,6 +171,88 @@ const subQuery = `SELECT * FROM bands WHERE genre = "punk"`
 sql`WITH punk_bands AS (${sql.raw(subQuery)}) SELECT * FROM punk_bands WHERE country2 = ${"US"}`
 // WITH punk_bands AS (SELECT * FROM bands WHERE genre = "punk") SELECT * FROM punk_bands WHERE country2 = 'US'
 ```
+
+### Special Object Conversions
+
+
+`sqigil` also supports the `pg-promise`-convention of special object conversion
+using `toPostgres`/`rawType` attributes. Both the symbol form
+(`Symbol.for('ctf.toPostgres')`, etc) and the string-attribute form are
+supported.
+
+Example:
+
+```javascript
+import { sql, toPostgres, rawType } from 'sqigil'
+
+// toPostgres and rawType are symbols, so won't show up in property enumeration
+
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName
+    this.lastName = lastName
+  }
+
+  toPostgres() {
+    // Because `rawType` is not set, this string will be interpreted
+    // as a string by `sql`, and properly escaped
+    return `${this.lastName}, ${this.firstName}`
+  }
+
+  // Or using the symbol, (takes precedence):
+  [toPostgres]() {
+    return `${this.lastName}, ${this.firstName}`
+  }
+}
+
+sql`INSERT INTO people(name) VALUES(${new Person("John", "O'Connor")})`
+// INSERT INTO people(name) VALUES('O''Connor, John')
+
+class HstoreMap {
+  constructor() {
+    this.map = new Map()
+  }
+
+  set(k, v) { this.map.set(k, v) }
+  get(k) { return this.map.get(k) }
+
+  [rawType] = true
+  [toPostgres]() {
+    const kvs = Array.from(this.map.entries())
+    // Instead of setting [rawType] to true, it's also possible
+    // to `return sql.raw('hstore(...)')`
+    return `hstore(ARRAY[${
+      sql.csv(kvs.map(kv => sql.csv(kv)))
+    }])`;
+  }
+}
+
+const m = new HstoreMap()
+m.set('a', '1')
+m.set('b', '2')
+sql`INSERT INTO hstore_tbl(attrs) VALUES (${m})`
+// INSERT INTO hstore_tbl(attrs) VALUES (hstore(ARRAY['a', '1', 'b', '2']))
+```
+
+(This feature is built to roughly concur with the interface defined by
+`pg-promise`.)
+
+
+#### Without The `sql` Tag
+
+Note that it's also possible to template into bare strings without the `sql`
+leader, though it's more dangerous because you must remember to escape every
+value:
+
+```javascript
+`INSERT INTO words (word) VALUES (${sql.value("John O'Connor')})`
+// INSERT INTO words(word) VALUES ('John O''Connor')
+
+// Exactly the same as:
+sql`INSERT INTO words (word) VALUES (${"John O'Connor"})`
+```
+
+Using the `sql` leader allows safe bare value inclusion.
 
 ## More Detailed Documentation
 
