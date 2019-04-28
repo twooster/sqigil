@@ -1,7 +1,7 @@
-# SQigiL: A Postgres SQL template string for Javascript
+# [SQigiL](https://github.com/twooster/sqigil): A Postgres SQL template string for Javascript
 
-[![CircleCI](https://circleci.com/gh/twooster/sqigil.svg?style=svg)](https://circleci.com/gh/twooster/sqigil)
-[![Coverage Status](https://coveralls.io/repos/github/twooster/sqigil/badge.svg)](https://coveralls.io/github/twooster/sqigil)
+[![CircleCI](https://img.shields.io/circleci/project/github/twooster/sqigil/master.svg)](https://circleci.com/gh/twooster/sqigil)
+[![Coverage Status](https://img.shields.io/coveralls/github/twooster/sqigil.svg)](https://coveralls.io/github/twooster/sqigil)
 
 This project provides an easy-to-use, safe, SQL string templating
 solution. It's built to work with
@@ -11,7 +11,9 @@ This project is built in Typescript, and will maintain 100% test
 coverage.
 
 Disclaimer: This project is still pretty new. I'm fairly confident in
-its safety, but for now, you're a beta user.
+its safety, but for now, you're a beta user. Please feel free to
+[create an issue](https://github.com/twooster/sqigil/issues) (or a pull
+request) if you find any bugs.
 
 ## Installation
 
