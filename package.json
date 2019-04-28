@@ -1,6 +1,6 @@
 {
   "name": "sqigil",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "SQigiL: Postgres SQL template string",
   "main": "dist/index.js",
   "scripts": {
