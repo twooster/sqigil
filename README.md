@@ -87,7 +87,7 @@ An escaped Postgres value, dependent on input type.
 | number | SQL number literal (escaped in some instances) | `10`, `1.2`, `Infinity`, `NaN` | `10`, `1.2`, `'+Infinity'`, `'NaN'` |
 | array | Postgres string array literal format, each element escaped | `[1, '"O\'Connor"', [true, false]]` | `'{1, "\"O''Connor\"", {TRUE, FALSE}}'` |
 | Date | SQL date in UTC | `new Date()` | `'2019-03-18T08:11:50.221+00:00'` |
-| Buffer | Hex-encoded Postgres escape-string | `Buffer.from('abc')` | `E'\\x616263'` |
+| Buffer | Hex-encoded Postgres escape-string | `Buffer.from('abc')` | `E'\x616263'` |
 | object | JSON-encoded SQL string | `{ a: "Doc'", b: "2" }` | `'{"a":"Doc''","b":"2"'}` |
 | Symbol | error | `Symbol('sym')` | Throws an error |
 | Function | error | `() => 'Anything'` | Throws an error |
