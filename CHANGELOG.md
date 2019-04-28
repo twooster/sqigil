@@ -1,5 +1,13 @@
 # SQigiL Changelog
 
+# v0.3.0
+
+* Refactoring, simplification some code
+* Array support in `id`
+* (BREAKING) No longer exporting `isPgConvertible` or `isPgSafeString`
+* (BREAKING) `SigilOpts` renamed to `ConversionOpts`
+* Added missing tests for `makeSigil`
+
 # v0.2.0
 
 * Fix array output
