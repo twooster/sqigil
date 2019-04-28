@@ -162,9 +162,9 @@ sql<span class="hljs-string">`SELECT * FROM (<span class="hljs-subst">${sql.raw(
 						</tr>
 						<tr>
 							<td>array</td>
-							<td>SQL array, each element escaped</td>
-							<td><code>[1, &#39;Green&#39;, [true, false]]</code></td>
-							<td><code>{1, &#39;Green&#39;, {TRUE, FALSE}}</code></td>
+							<td>Postgres string array literal format, each element escaped</td>
+							<td><code>[1, &#39;&quot;O\&#39;Connor&quot;&#39;, [true, false]]</code></td>
+							<td><code>&#39;{1, &quot;\&quot;O&#39;&#39;Connor\&quot;&quot;, {TRUE, FALSE}}&#39;</code></td>
 						</tr>
 						<tr>
 							<td>Date</td>
@@ -191,15 +191,6 @@ sql<span class="hljs-string">`SELECT * FROM (<span class="hljs-subst">${sql.raw(
 							<td>Throws an error</td>
 						</tr>
 				</tbody></table>
-				<p>Additionally, objects can have a <code>toPostgres</code> (or <code>Symbol.for(&#39;ctf.toPostgres&#39;)</code>)
-					symbol defined on them, which -- if present and a function -- should return
-					the value that should be used instead. The value returned from this method
-					will be escaped as usual, <strong>unless</strong> <code>rawType</code> is defined on the object (or
-					<code>Symbol.for(&#39;ctf.rawType&#39;)</code>) and set to truthy. In that case, the value from
-					<code>toPostgres</code> is expected to be a <code>string</code>, and will treated as already
-				escaped and no processing will occur.</p>
-				<p>(This feature is built to roughly concur with the interface defined by
-				<code>pg-promise</code>.)</p>
 				<h4 id="sql-bool"><code>sql.bool</code></h4>
 				<p><strong>Outputs:</strong> Converts input value to a SQL boolean based upon Javascript
 				truthiness rules</p>
@@ -244,6 +235,82 @@ sql<span class="hljs-string">`INSERT INTO users(<span class="hljs-subst">${sql.k
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> subQuery = <span class="hljs-string">`SELECT * FROM bands WHERE genre = "punk"`</span>
 sql<span class="hljs-string">`WITH punk_bands AS (<span class="hljs-subst">${sql.raw(subQuery)}</span>) SELECT * FROM punk_bands WHERE country2 = <span class="hljs-subst">${<span class="hljs-string">"US"</span>}</span>`</span>
 <span class="hljs-comment">// WITH punk_bands AS (SELECT * FROM bands WHERE genre = "punk") SELECT * FROM punk_bands WHERE country2 = 'US'</span></code></pre>
+				<h3 id="special-object-conversions">Special Object Conversions</h3>
+				<p><code>sqigil</code> also supports the <code>pg-promise</code>-convention of special object conversion
+					using <code>toPostgres</code>/<code>rawType</code> attributes. Both the symbol form
+					(<code>Symbol.for(&#39;ctf.toPostgres&#39;)</code>, etc) and the string-attribute form are
+				supported.</p>
+				<p>Example:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { sql, toPostgres, rawType } <span class="hljs-keyword">from</span> <span class="hljs-string">'sqigil'</span>
+
+<span class="hljs-comment">// toPostgres and rawType are symbols, so won't show up in property enumeration</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> </span>{
+  <span class="hljs-keyword">constructor</span>(firstName, lastName) {
+    <span class="hljs-keyword">this</span>.firstName = firstName
+    <span class="hljs-keyword">this</span>.lastName = lastName
+  }
+
+  toPostgres() {
+    <span class="hljs-comment">// Because `rawType` is not set, this string will be interpreted</span>
+    <span class="hljs-comment">// as a string by `sql`, and properly escaped</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.lastName}</span>, <span class="hljs-subst">${<span class="hljs-keyword">this</span>.firstName}</span>`</span>
+  }
+
+  <span class="hljs-comment">// Or using the symbol, (takes precedence):</span>
+  [toPostgres]() {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${<span class="hljs-keyword">this</span>.lastName}</span>, <span class="hljs-subst">${<span class="hljs-keyword">this</span>.firstName}</span>`</span>
+  }
+}
+
+sql<span class="hljs-string">`INSERT INTO people(name) VALUES(<span class="hljs-subst">${<span class="hljs-keyword">new</span> Person(<span class="hljs-string">"John"</span>, <span class="hljs-string">"O'Connor"</span>)}</span>)`</span>
+<span class="hljs-comment">// INSERT INTO people(name) VALUES('O''Connor, John')</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HstoreMap</span> </span>{
+  <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">this</span>.map = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>()
+  }
+
+  <span class="hljs-keyword">set</span>(k, v) { <span class="hljs-keyword">this</span>.map.set(k, v) }
+  <span class="hljs-keyword">get</span>(k) { <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.map.get(k) }
+
+  [rawType] = <span class="hljs-literal">true</span>
+  [toPostgres]() {
+    <span class="hljs-keyword">const</span> kvs = <span class="hljs-built_in">Array</span>.from(<span class="hljs-keyword">this</span>.map.entries())
+    <span class="hljs-comment">// Instead of setting [rawType] to true, it's also possible</span>
+    <span class="hljs-comment">// to `return sql.raw('hstore(...)')`</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`hstore(ARRAY[<span class="hljs-subst">${
+      sql.csv(kvs.map(kv =&gt; sql.csv(kv)))
+    }</span>])`</span>;
+  }
+}
+
+<span class="hljs-keyword">const</span> m = <span class="hljs-keyword">new</span> HstoreMap()
+m.set(<span class="hljs-string">'a'</span>, <span class="hljs-string">'1'</span>)
+m.set(<span class="hljs-string">'b'</span>, <span class="hljs-string">'2'</span>)
+sql<span class="hljs-string">`INSERT INTO hstore_tbl(attrs) VALUES (<span class="hljs-subst">${m}</span>)`</span>
+<span class="hljs-comment">// INSERT INTO hstore_tbl(attrs) VALUES (hstore(ARRAY['a', '1', 'b', '2']))</span></code></pre>
+				<p>Important notes:</p>
+				<ul>
+					<li><p>Use only symbol form or string form in a single object. Mixing the two will
+						not work.</p>
+					</li>
+					<li><p>If <code>rawType</code> is used, <code>toPostgres</code> <strong>must</strong> return a string, or an
+						error will be thrown.</p>
+					</li>
+				</ul>
+				<p>(This feature is built to roughly concur with the interface defined by
+				<code>pg-promise</code>.)</p>
+				<h4 id="without-the-sql-tag">Without The <code>sql</code> Tag</h4>
+				<p>Note that it&#39;s also possible to template into bare strings without the <code>sql</code>
+					leader, though it&#39;s more dangerous because you must remember to escape every
+				value:</p>
+				<pre><code class="language-javascript">`INSERT INTO words (word) VALUES (${sql.value(&quot;John O&#39;Connor&#39;)})`
+// INSERT INTO words(word) VALUES (&#39;John O&#39;&#39;Connor&#39;)
+
+// Exactly the same as:
+sql`INSERT INTO words (word) VALUES (${&quot;John O&#39;Connor&quot;})`</code></pre>
+				<p>Using the <code>sql</code> leader allows safe bare value inclusion.</p>
 				<h2 id="more-detailed-documentation">More Detailed Documentation</h2>
 				<p>See the <a href="https://tonywooster.com/sqigil">documentation</a> for a full list
 					of available formatting options. Of primary interest are the conversion
