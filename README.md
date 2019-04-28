@@ -88,8 +88,9 @@ An escaped Postgres value, dependent on input type.
 | array | Postgres string array literal format, each element escaped | `[1, '"O\'Connor"', [true, false]]` | `'{1, "\"O''Connor\"", {TRUE, FALSE}}'` |
 | Date | SQL date in UTC | `new Date()` | `'2019-03-18T08:11:50.221+00:00'` |
 | Buffer | Hex-encoded Postgres escape-string | `Buffer.from('abc')` | `E'\\x616263'` |
-| object | JSON-encoded SQL string | `{ a: 1, b: "2" }` | `{"a":1,"b":"2"}` |
+| object | JSON-encoded SQL string | `{ a: "Doc'", b: "2" }` | `'{"a":"Doc''","b":"2"'}` |
 | Symbol | error | `Symbol('sym')` | Throws an error |
+| Function | error | `() => 'Anything'` | Throws an error |
 
 
 #### `sql.bool`
@@ -244,7 +245,6 @@ Important notes:
 (This feature is built to roughly concur with the interface defined by
 `pg-promise`.)
 
-
 #### Without The `sql` Tag
 
 Note that it's also possible to template into bare strings without the `sql`
@@ -260,6 +260,41 @@ sql`INSERT INTO words (word) VALUES (${"John O'Connor"})`
 ```
 
 Using the `sql` leader allows safe bare value inclusion.
+
+## Custom Templating
+
+You can customize the templater in two ways:
+
+* Custom date formatting (defaults to UTC)
+* Custom object formatting (defaults to `JSON.stringify`)
+
+How? Simple:
+
+```javascript
+const { sql, makeSigil, makeSafeString } = require('sqigil')
+
+const customSql = makeSigil({
+  // Will not be escaped
+  convertDate: (date) => makeSafeString('DATE!'),
+  convertObject(obj) {
+    if (obj instanceof MySpecialObj) {
+      // Will be escaped as a string
+      return JSON.stringify({
+        theName: obj.getName()
+      })
+    } else {
+      // Will be escaped as a string
+      return JSON.stringify(obj)
+    }
+  }
+})
+
+customSql`${new MySpecialObj({ name: "John" })}`
+// `'{"theName":"John"}'`
+
+customSql`${new Date()}`
+// `DATE!`
+```
 
 ## More Detailed Documentation
 
