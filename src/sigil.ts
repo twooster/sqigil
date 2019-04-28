@@ -1,5 +1,5 @@
 import { ConversionError } from './errors'
-import { PgSafeString, makeSafeString } from './safe-string'
+import { SafeString, makeSafeString } from './safe-string'
 import { dateToString, dateToStringUTC } from './date'
 import { toLiteral, ConversionOpts } from './to-literal'
 
@@ -31,7 +31,7 @@ export interface SqlSigil {
    * @param val the value to convert to boolean, according to Javascript
    *   boolean semantics
    */
-  bool(val: unknown): PgSafeString
+  bool(val: unknown): SafeString
 
   /**
    * Converts an array of objects into a comma-separated list of
@@ -44,7 +44,7 @@ export interface SqlSigil {
    *
    * @param vals array of values to convert
    */
-  csv(vals: unknown[]): PgSafeString
+  csv(vals: unknown[]): SafeString
 
   /**
    * Converts an array of strings (or multi-part string ids as arrays)
@@ -57,7 +57,7 @@ export interface SqlSigil {
    *
    * @param ids array of ids (strings or string arrays) to covert
    */
-  csids(ids: Array<string | string[]>): PgSafeString
+  csids(ids: Array<string | string[]>): SafeString
 
   /**
    * @hidden
@@ -72,7 +72,7 @@ export interface SqlSigil {
    *
    * @param atoms the identifier "pieces"
    */
-  id(atoms: string[]): PgSafeString
+  id(atoms: string[]): SafeString
 
   /**
    * Converts a string into an SQL-safe identifier. If passed multiple
@@ -86,7 +86,7 @@ export interface SqlSigil {
    * @param first first id component
    * @param rest remainder of id components
    */
-  id(first: string, ...rest: string[]): PgSafeString
+  id(first: string, ...rest: string[]): SafeString
 
   /**
    * Given a plain javascript object, returns a list of that object's
@@ -99,7 +99,7 @@ export interface SqlSigil {
    *
    * @param object the object whose keys will be iterated
    */
-  keys(obj: { [k: string]: unknown }): PgSafeString
+  keys(obj: { [k: string]: unknown }): SafeString
 
   /**
    * Includes the provided string as raw, unescaped SQL.
@@ -112,7 +112,7 @@ export interface SqlSigil {
    *
    * @param val the raw sql to include
    */
-  raw(sql: string): PgSafeString
+  raw(sql: string): SafeString
 
   /**
    * Converts a date into a Postgres-formatted date string in the local
@@ -125,7 +125,7 @@ export interface SqlSigil {
    *
    * @param date the date to convert
    */
-  tz(date: Date): PgSafeString
+  tz(date: Date): SafeString
 
   /**
    * Converts a date into a Postgres-formatted date string in the UTC
@@ -138,7 +138,7 @@ export interface SqlSigil {
    *
    * @param date the date to convert
    */
-  utc(date: Date): PgSafeString
+  utc(date: Date): SafeString
 
   /**
    * Converts a value into its Postgres-escaped equivalent.
@@ -261,7 +261,7 @@ export interface SqlSigil {
    *
    * @param val the value to convert
    */
-  value(val: unknown): PgSafeString
+  value(val: unknown): SafeString
 
   /**
    * Takes the values of the provided object and coverts them to their
@@ -276,7 +276,7 @@ export interface SqlSigil {
    * ```
    *
    */
-  values(obj: { [k: string]: unknown }): PgSafeString
+  values(obj: { [k: string]: unknown }): SafeString
 }
 
 /**
@@ -287,14 +287,14 @@ function escapeId(ref: string): string {
   return '"' + ref.replace(/"/g, '""') + '"'
 }
 
-function raw(value: string): PgSafeString {
+function raw(value: string): SafeString {
   return makeSafeString(value)
 }
 
 function id(arr: []): never
-function id(arr: string[]): PgSafeString
-function id(first: string, ...rest: string[]): PgSafeString
-function id(first: string | string[], ...rest: string[]): PgSafeString {
+function id(arr: string[]): SafeString
+function id(first: string, ...rest: string[]): SafeString
+function id(first: string | string[], ...rest: string[]): SafeString {
   if (typeof first === 'string') {
     let str = escapeId(first)
     for (let i = 0; i < rest.length; ++i) {
@@ -314,35 +314,35 @@ function id(first: string | string[], ...rest: string[]): PgSafeString {
   }
 }
 
-function utc(val: Date): PgSafeString {
+function utc(val: Date): SafeString {
   return makeSafeString("'" + dateToStringUTC(val) + "'")
 }
 
-function tz(val: Date): PgSafeString {
+function tz(val: Date): SafeString {
   return makeSafeString("'" + dateToString(val) + "'")
 }
 
-function keys(val: { [k: string]: unknown }): PgSafeString {
+function keys(val: { [k: string]: unknown }): SafeString {
   return makeSafeString(
     Object.keys(val).map(escapeId).join(', ')
   )
 }
 
-function values(opts: ConversionOpts, val: { [k: string]: unknown }): PgSafeString {
+function values(opts: ConversionOpts, val: { [k: string]: unknown }): SafeString {
   return makeSafeString(
     Object.keys(val).map(k => toLiteral(opts, val[k])).join(', ')
   )
 }
 
-function bool(val: unknown): PgSafeString {
+function bool(val: unknown): SafeString {
   return makeSafeString(val ? 'TRUE' : 'FALSE')
 }
 
-function csv(opts: ConversionOpts, vals: unknown[]): PgSafeString {
+function csv(opts: ConversionOpts, vals: unknown[]): SafeString {
   return makeSafeString(vals.map(v => toLiteral(opts, v)).join(', '))
 }
 
-function csids(ids: Array<string | string[]>): PgSafeString {
+function csids(ids: Array<string | string[]>): SafeString {
   return makeSafeString(ids.map(v => {
     if (typeof v === 'string') {
       return escapeId(v)
@@ -356,7 +356,7 @@ function csids(ids: Array<string | string[]>): PgSafeString {
   }).join(', '))
 }
 
-function value(opts: ConversionOpts, val: unknown): PgSafeString {
+function value(opts: ConversionOpts, val: unknown): SafeString {
   return makeSafeString(toLiteral(opts, val))
 }
 
