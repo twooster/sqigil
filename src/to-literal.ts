@@ -66,8 +66,15 @@ function escapeString(value: string, inArray: boolean): string {
  * representation
  * @hidden
  */
-function arrayToLiteral(opts: ConversionOpts, arr: unknown[], inArray: boolean, seen: Set<unknown>): string {
-  const val =  '{' + arr.map(val => toLiteralRecur(opts, val, true, seen)).join(', ') + '}'
+function arrayToLiteral(
+  opts: ConversionOpts,
+  arr: unknown[],
+  inArray: boolean,
+  seen: Set<unknown>,
+): string {
+  const val = '{'
+    + arr.map(val => toLiteralRecur(opts, val, true, seen)).join(', ')
+    + '}'
   if (!inArray) {
     return escapeString(val, false)
   }
@@ -77,7 +84,12 @@ function arrayToLiteral(opts: ConversionOpts, arr: unknown[], inArray: boolean, 
 /**
  * @hidden
  */
-function toLiteralRecur(opts: ConversionOpts, val: unknown, inArray: boolean, seen?: Set<unknown>): string {
+function toLiteralRecur(
+  opts: ConversionOpts,
+  val: unknown,
+  inArray: boolean,
+  seen?: Set<unknown>,
+): string {
   switch (typeof val) {
     case 'string':
       return escapeString(val, inArray)
@@ -95,23 +107,24 @@ function toLiteralRecur(opts: ConversionOpts, val: unknown, inArray: boolean, se
       }
 
     case 'boolean':
-      return val ? "TRUE" : "FALSE"
+      return val ? 'TRUE' : 'FALSE'
 
     case 'undefined':
-      return "NULL"
+      return 'NULL'
 
     case 'object':
       if (val === null) {
-        return "NULL"
+        return 'NULL'
       } else if (val instanceof String || val instanceof Number) {
         // Boxed types
         return toLiteralRecur(opts, val.valueOf(), inArray, seen)
       } else if (val instanceof Date) {
         return toLiteralRecur(opts, opts.convertDate(val), inArray, seen)
       } else if (val instanceof Buffer) {
-        return `E'\\x` + val.toString('hex')  + `'`
+        return `E'\\x` + val.toString('hex') + `'`
       } else {
         if (!seen) {
+          // eslint-disable-next-line no-param-reassign
           seen = new Set()
         } else if (seen.has(val)) {
           throw new ConversionError('Cyclical data structure encountered')
@@ -126,9 +139,9 @@ function toLiteralRecur(opts: ConversionOpts, val: unknown, inArray: boolean, se
             return pgVal
           }
           return toLiteralRecur(opts, pgVal, inArray, seen)
-        } else if (typeof (val as any)['toPostgres'] === 'function') {
-          const pgVal = (val as any)['toPostgres']()
-          if ((val as any)['rawType']) {
+        } else if (typeof (val as any).toPostgres === 'function') {
+          const pgVal = (val as any).toPostgres()
+          if ((val as any).rawType) {
             if (typeof pgVal !== 'string') {
               throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }

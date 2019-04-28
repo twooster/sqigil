@@ -1,4 +1,15 @@
-export function mockDate(attrs: { year: number, month: number, day: number, hours: number, minutes: number, seconds: number, millis: number, tzOffset: number }): Date {
+interface DateAttrs {
+  year: number
+  month: number
+  day: number
+  hours: number
+  minutes: number
+  seconds: number
+  millis: number
+  tzOffset: number
+}
+
+export function mockDate(attrs: DateAttrs): Date {
   const d = new Date()
   jest.spyOn(d, 'getFullYear').mockImplementation(() => attrs.year)
   jest.spyOn(d, 'getUTCFullYear').mockImplementation(() => attrs.year)

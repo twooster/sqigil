@@ -7,7 +7,7 @@ describe('default sigil', () => {
   })
 
   test('basic value inclusion', () => {
-    expect(sql`SELECT ${1}, ${"str"}, ${[1,`He said, "I can't!"`,3]}`)
+    expect(sql`SELECT ${1}, ${'str'}, ${[1, `He said, "I can't!"`, 3]}`)
       .toEqual(`SELECT 1, 'str', '{1, "He said, \\"I can''t!\\"", 3}'`)
   })
 
@@ -36,7 +36,7 @@ describe('default sigil', () => {
       minutes: 23,
       seconds: 45,
       millis: 221,
-      tzOffset: 120
+      tzOffset: 120,
     })
 
     expect(sql`${sql.utc(d)}`).toEqual(`'2019-01-22T14:23:45.221+00:00'`)
@@ -51,7 +51,7 @@ describe('default sigil', () => {
       minutes: 23,
       seconds: 45,
       millis: 221,
-      tzOffset: 120
+      tzOffset: 120,
     })
 
     expect(sql`${sql.tz(d)}`).toEqual(`'2019-01-22T14:23:45.221-02:00'`)
@@ -101,7 +101,7 @@ describe('makeSigil', () => {
   test('uses convertDate and convertObject', () => {
     const custom = makeSigil({
       convertDate: () => 'date!',
-      convertObject: () => 'object!'
+      convertObject: () => 'object!',
     })
 
     expect(custom`${new Date()}`).toEqual(`'date!'`)

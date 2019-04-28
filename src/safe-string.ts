@@ -16,11 +16,11 @@ export interface SafeString {
  * @returns a SafeString object
  */
 export function makeSafeString(val: string): SafeString {
-  const fn = () => val
+  const fn = (): string => val
   return {
     [toPostgres]: fn,
     [rawType]: true,
     toString: fn,
-    valueOf: fn
+    valueOf: fn,
   }
 }

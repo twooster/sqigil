@@ -10,7 +10,7 @@ test('date strings', () => {
     minutes: 23,
     seconds: 45,
     millis: 221,
-    tzOffset: 120
+    tzOffset: 120,
   })
 
   expect(dateToString(d1)).toEqual('2019-01-22T14:23:45.221-02:00')
@@ -24,7 +24,7 @@ test('date strings', () => {
     minutes: 0,
     seconds: 0,
     millis: 0,
-    tzOffset: -90
+    tzOffset: -90,
   })
 
   expect(dateToString(d2)).toEqual('0200-01-01T00:00:00.000+01:30')
@@ -38,7 +38,7 @@ test('date strings', () => {
     minutes: 13,
     seconds: 14,
     millis: 15,
-    tzOffset: 0
+    tzOffset: 0,
   })
 
   expect(dateToString(d3)).toEqual('0020-10-11T12:13:14.015+00:00')
@@ -52,7 +52,7 @@ test('date strings', () => {
     minutes: 13,
     seconds: 14,
     millis: 15,
-    tzOffset: 0
+    tzOffset: 0,
   })
 
   expect(dateToString(d4)).toEqual('0002-10-11T12:13:14.015+00:00')
@@ -68,7 +68,7 @@ test('bc years', () => {
     minutes: 23,
     seconds: 45,
     millis: 221,
-    tzOffset: 120
+    tzOffset: 120,
   })
 
   expect(dateToString(d1)).toEqual('0001-01-22T14:23:45.221-02:00 BC')
@@ -82,7 +82,7 @@ test('bc years', () => {
     minutes: 23,
     seconds: 45,
     millis: 221,
-    tzOffset: 120
+    tzOffset: 120,
   })
 
   expect(dateToString(d2)).toEqual('0200-01-22T14:23:45.221-02:00 BC')

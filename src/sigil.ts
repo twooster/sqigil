@@ -360,7 +360,11 @@ function value(opts: ConversionOpts, val: unknown): SafeString {
   return makeSafeString(toLiteral(opts, val))
 }
 
-function templateSql (opts: ConversionOpts, strings: TemplateStringsArray, args: unknown[]): string {
+function templateSql(
+  opts: ConversionOpts,
+  strings: TemplateStringsArray,
+  args: unknown[],
+): string {
   let i
   let str = ''
   for (i = 0; i < args.length; ++i) {
@@ -408,5 +412,5 @@ export function makeSigil(opts: ConversionOpts): SqlSigil {
  */
 export const sql: SqlSigil = makeSigil({
   convertDate: dateToStringUTC,
-  convertObject: JSON.stringify
+  convertObject: JSON.stringify,
 })

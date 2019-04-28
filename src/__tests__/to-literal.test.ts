@@ -5,7 +5,7 @@ import { toPostgres, rawType } from '../symbols'
 describe('toLiteral', () => {
   const opts: ConversionOpts = {
     convertDate: dateToStringUTC,
-    convertObject: JSON.stringify
+    convertObject: JSON.stringify,
   }
 
   test('escapes strings', () => {
@@ -14,6 +14,7 @@ describe('toLiteral', () => {
   })
 
   it('accepts String objects', () => {
+    // eslint-disable-next-line no-new-wrappers
     expect(toLiteral(opts, new String("O'Connor"))).toEqual(`'O''Connor'`)
   })
 
@@ -25,6 +26,7 @@ describe('toLiteral', () => {
   })
 
   it('accepts Number objects', () => {
+    // eslint-disable-next-line no-new-wrappers
     expect(toLiteral(opts, new Number(123))).toEqual(`123`)
   })
 
@@ -44,7 +46,7 @@ describe('toLiteral', () => {
   test('converts dates via the provided date conversion fn', () => {
     const opts = {
       convertDate: () => 'some-date',
-      convertObject: JSON.stringify
+      convertObject: JSON.stringify,
     }
     expect(toLiteral(opts, new Date())).toEqual(`'some-date'`)
   })
@@ -53,7 +55,7 @@ describe('toLiteral', () => {
   test('converts unknown objects via provided conversion fn', () => {
     const opts = {
       convertDate: dateToStringUTC,
-      convertObject: () => 'some-obj'
+      convertObject: () => 'some-obj',
     }
     expect(toLiteral(opts, {})).toEqual(`'some-obj'`)
   })
@@ -64,7 +66,7 @@ describe('toLiteral', () => {
   })
 
   it('throws on symbols', () => {
-    expect(() => toLiteral(opts, () => Symbol())).toThrow()
+    expect(() => toLiteral(opts, () => Symbol('some-symbol'))).toThrow()
   })
 
   it('throws on functions', () => {
@@ -73,23 +75,27 @@ describe('toLiteral', () => {
 
   describe('arrays', () => {
     test('converts empty arrays', () => {
-      expect(toLiteral(opts, [])).toEqual("'{}'")
+      expect(toLiteral(opts, []))
+        .toEqual("'{}'")
     })
 
     test('converts arrays with some values', () => {
-      expect(toLiteral(opts, ['hi', 'there'])).toEqual(`'{"hi", "there"}'`)
+      expect(toLiteral(opts, ['hi', 'there']))
+        .toEqual(`'{"hi", "there"}'`)
     })
 
     test('escapes array values', () => {
-      expect(toLiteral(opts, [`h'i the"re`, Infinity])).toEqual(`'{"h''i the\\"re", ''+Infinity''}'`)
+      expect(toLiteral(opts, [`h'i the"re`, Infinity]))
+        .toEqual(`'{"h''i the\\"re", ''+Infinity''}'`)
     })
 
     test('supports nested arrays', () => {
-      expect(toLiteral(opts, [['hi'], ['there']])).toEqual(`'{{"hi"}, {"there"}}'`)
+      expect(toLiteral(opts, [['hi'], ['there']]))
+        .toEqual(`'{{"hi"}, {"there"}}'`)
     })
 
     test('throws on mutually recursive arrays', () => {
-      const a: any[] = ['a']
+      const a: unknown[] = ['a']
       a.push(a)
       expect(() => toLiteral(opts, a)).toThrow()
     })
@@ -100,11 +106,11 @@ describe('toLiteral', () => {
       it('throws if the result of toPostgres is not a string', () => {
         const tSymbol = {
           [toPostgres]: () => true,
-          [rawType]: true
+          [rawType]: true,
         }
         const tString = {
           toPostgres: () => true,
-          rawType: true
+          rawType: true,
         }
         expect(() => toLiteral(opts, tSymbol)).toThrow()
         expect(() => toLiteral(opts, tString)).toThrow()
@@ -113,11 +119,11 @@ describe('toLiteral', () => {
       it('passes thru raw values', () => {
         const tSymbol = {
           [toPostgres]: () => 'bob',
-          [rawType]: true
+          [rawType]: true,
         }
         const tString = {
           toPostgres: () => 'bob',
-          rawType: true
+          rawType: true,
         }
         expect(toLiteral(opts, tSymbol)).toEqual('bob')
         expect(toLiteral(opts, tString)).toEqual('bob')
@@ -127,6 +133,7 @@ describe('toLiteral', () => {
     describe('non-raw values', () => {
       it('throws on recursive structures', () => {
         const tSymbol = {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           [toPostgres]: () => tString,
         }
         const tString = {
