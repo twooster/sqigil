@@ -305,11 +305,11 @@ sql<span class="hljs-string">`INSERT INTO hstore_tbl(attrs) VALUES (<span class=
 				<p>Note that it&#39;s also possible to template into bare strings without the <code>sql</code>
 					leader, though it&#39;s more dangerous because you must remember to escape every
 				value:</p>
-				<pre><code class="language-javascript">`INSERT INTO words (word) VALUES (${sql.value(&quot;John O&#39;Connor&#39;)})`
-// INSERT INTO words(word) VALUES (&#39;John O&#39;&#39;Connor&#39;)
+				<pre><code class="language-javascript"><span class="hljs-string">`INSERT INTO words (word) VALUES (<span class="hljs-subst">${sql.value(<span class="hljs-string">"John O'Connor"</span>)}</span>)`</span>
+<span class="hljs-comment">// INSERT INTO words(word) VALUES ('John O''Connor')</span>
 
-// Exactly the same as:
-sql`INSERT INTO words (word) VALUES (${&quot;John O&#39;Connor&quot;})`</code></pre>
+<span class="hljs-comment">// Exactly the same as:</span>
+sql<span class="hljs-string">`INSERT INTO words (word) VALUES (<span class="hljs-subst">${<span class="hljs-string">"John O'Connor"</span>}</span>)`</span></code></pre>
 				<p>Using the <code>sql</code> leader allows safe bare value inclusion.</p>
 				<h2 id="more-detailed-documentation">More Detailed Documentation</h2>
 				<p>See the <a href="https://tonywooster.com/sqigil">documentation</a> for a full list

@@ -252,7 +252,7 @@ leader, though it's more dangerous because you must remember to escape every
 value:
 
 ```javascript
-`INSERT INTO words (word) VALUES (${sql.value("John O'Connor')})`
+`INSERT INTO words (word) VALUES (${sql.value("John O'Connor")})`
 // INSERT INTO words(word) VALUES ('John O''Connor')
 
 // Exactly the same as:
