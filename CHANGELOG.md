@@ -1,5 +1,10 @@
 # SQigiL Changelog
 
+# vNext
+
+* Renamed PgSafeString -> SafeString
+* Now with linting!
+
 # v0.3.0
 
 * Refactoring, simplification some code

@@ -11,7 +11,7 @@
     "build-docs": "typedoc --out docs  --exclude '**/*.spec.*' --mode file ./src/index.ts",
     "cover-ci": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "cover": "jest --coverage",
-    "lint": "eslint 'src/**/*.ts'",
+    "lint": "eslint --ext ts src",
     "test": "jest"
   },
   "author": "Tony Wooster <twooster@gmail.com>",
