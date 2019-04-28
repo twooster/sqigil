@@ -1,12 +1,7 @@
 import { ConversionError } from './errors'
-import { toPostgres, PgSafeString, isPgSafeString, makeSafeString } from './pg-convertible'
-import { toLiteral, ToLiteralOpts } from './to-literal'
+import { PgSafeString, makeSafeString } from './safe-string'
 import { dateToString, dateToStringUTC } from './date'
-
-/**
- * Options for creating a new sql template-string sigil.
- */
-export type SigilOpts = ToLiteralOpts
+import { toLiteral, ConversionOpts } from './to-literal'
 
 /**
  * SQL templating function, with methods for specific conversions.
@@ -65,6 +60,21 @@ export interface SqlSigil {
   csids(ids: Array<string | string[]>): PgSafeString
 
   /**
+   * @hidden
+   */
+  id(atoms: []): never
+  /**
+   * Converts an array of strings to a period-delimited SQL identifier.
+   *
+   * ```javascript
+   * sql`SELECT ${sql.id(['users', 'name'])} FROM users`
+   * // `SELECT "users"."name" FROM users`
+   *
+   * @param atoms the identifier "pieces"
+   */
+  id(atoms: string[]): PgSafeString
+
+  /**
    * Converts a string into an SQL-safe identifier. If passed multiple
    * parameters, this method will instead build a period-delimited identifier.
    *
@@ -89,7 +99,7 @@ export interface SqlSigil {
    *
    * @param object the object whose keys will be iterated
    */
-  keys(obj: object): PgSafeString
+  keys(obj: { [k: string]: unknown }): PgSafeString
 
   /**
    * Includes the provided string as raw, unescaped SQL.
@@ -204,8 +214,8 @@ export interface SqlSigil {
    *   ```
    *
    * * Date objects will be converted to a Postgres-compatible date string
-   *   according to the [[SigilOpts]] `convertDate` option provided to build
-   *   the sql sigil (defaults to [[dateToStringUTC]]).
+   *   according to the [[ConversionOpts]] `convertDate` option provided to
+   *   build the sql sigil (defaults to [[dateToStringUTC]]).
    *
    *   ```javascript
    *   sql`SELECT ${new Date()}`
@@ -240,7 +250,7 @@ export interface SqlSigil {
    *     // `SELECT str`
    *     ```
    *
-   *   * Otherwise, the object will be converted via the [[SigilOpts]]
+   *   * Otherwise, the object will be converted via the [[ConversionOpts]]
    *     `convertObject` attribute used to build the SQL sigil. Defaults to
    *     `JSON.stringify`
    *
@@ -266,7 +276,7 @@ export interface SqlSigil {
    * ```
    *
    */
-  values(obj: object): PgSafeString
+  values(obj: { [k: string]: unknown }): PgSafeString
 }
 
 /**
@@ -277,88 +287,112 @@ function escapeId(ref: string): string {
   return '"' + ref.replace(/"/g, '""') + '"'
 }
 
+function raw(value: string): PgSafeString {
+  return makeSafeString(value)
+}
+
+function id(arr: []): never
+function id(arr: string[]): PgSafeString
+function id(first: string, ...rest: string[]): PgSafeString
+function id(first: string | string[], ...rest: string[]): PgSafeString {
+  if (typeof first === 'string') {
+    let str = escapeId(first)
+    for (let i = 0; i < rest.length; ++i) {
+      str += '.' + escapeId(rest[i])
+    }
+    return makeSafeString(str)
+  } else {
+    if (first.length === 0) {
+      throw new ConversionError('Cannot convert empty id')
+    } else {
+      let str = escapeId(first[0])
+      for (let i = 1; i < first.length; ++i) {
+        str += '.' + escapeId(first[i])
+      }
+      return makeSafeString(str)
+    }
+  }
+}
+
+function utc(val: Date): PgSafeString {
+  return makeSafeString("'" + dateToStringUTC(val) + "'")
+}
+
+function tz(val: Date): PgSafeString {
+  return makeSafeString("'" + dateToString(val) + "'")
+}
+
+function keys(val: { [k: string]: unknown }): PgSafeString {
+  return makeSafeString(
+    Object.keys(val).map(escapeId).join(', ')
+  )
+}
+
+function values(opts: ConversionOpts, val: { [k: string]: unknown }): PgSafeString {
+  return makeSafeString(
+    Object.keys(val).map(k => toLiteral(opts, val[k])).join(', ')
+  )
+}
+
+function bool(val: unknown): PgSafeString {
+  return makeSafeString(val ? 'TRUE' : 'FALSE')
+}
+
+function csv(opts: ConversionOpts, vals: unknown[]): PgSafeString {
+  return makeSafeString(vals.map(v => toLiteral(opts, v)).join(', '))
+}
+
+function csids(ids: Array<string | string[]>): PgSafeString {
+  return makeSafeString(ids.map(v => {
+    if (typeof v === 'string') {
+      return escapeId(v)
+    } else { // Array
+      if (v.length === 0) {
+        throw new ConversionError('Cannot convert empty id')
+      } else {
+        return v.map(v => escapeId(v)).join('.')
+      }
+    }
+  }).join(', '))
+}
+
+function value(opts: ConversionOpts, val: unknown): PgSafeString {
+  return makeSafeString(toLiteral(opts, val))
+}
+
+function templateSql (opts: ConversionOpts, strings: TemplateStringsArray, args: unknown[]): string {
+  let i
+  let str = ''
+  for (i = 0; i < args.length; ++i) {
+    str += strings[i]
+    str += toLiteral(opts, args[i])
+  }
+  str += strings[i]
+  return str
+}
+
+
 /**
  * Builds a sigil/templating object given the provided options
  *
  * @param opts the sigil options
  * @returns a template-string sigil function
  */
-export function makeSigil(opts: SigilOpts): SqlSigil {
+export function makeSigil(opts: ConversionOpts): SqlSigil {
   function sigil(strings: TemplateStringsArray, ...args: unknown[]): string {
-    let i
-    let str = ''
-    for (i = 0; i < args.length; ++i) {
-      str += strings[i]
-
-      const arg = args[i]
-      // Shortcut a happy path:
-      if (isPgSafeString(arg)) {
-        str += arg[toPostgres]()
-      } else {
-        str += toLiteral(opts, arg)
-      }
-    }
-    str += strings[i]
-    return str
+    return templateSql(opts, strings, args)
   }
 
-  sigil.raw = function raw(value: string): PgSafeString {
-    return makeSafeString(value)
-  }
-
-  sigil.id = function id(first: string, ...rest: string[]): PgSafeString {
-    let str = escapeId(first)
-    for (let i = 0; i < rest.length; ++i) {
-      str += '.' + escapeId(rest[i])
-    }
-    return makeSafeString(str)
-  }
-
-  sigil.utc = function utc(val: Date): PgSafeString {
-    return makeSafeString("'" + dateToStringUTC(val) + "'")
-  }
-
-  sigil.tz = function tz(val: Date): PgSafeString {
-    return makeSafeString("'" + dateToString(val) + "'")
-  }
-
-  sigil.keys = function keys(val: object): PgSafeString {
-    return makeSafeString(
-      Object.keys(val).map(escapeId).join(', ')
-    )
-  }
-
-  sigil.values = function values(val: object): PgSafeString {
-    return makeSafeString(
-      Object.keys(val).map(k => toLiteral(opts, (val as any)[k])).join(', ')
-    )
-  }
-
-  sigil.bool = function bool(val: unknown): PgSafeString {
-    return makeSafeString(val ? "TRUE" : "FALSE")
-  }
-
-  sigil.csv = function csv(vals: unknown[]): PgSafeString {
-    return makeSafeString(vals.map(v => toLiteral(opts, v)).join(', '))
-  }
-
-  sigil.csids = function csids(ids: Array<string | string[]>): PgSafeString {
-    return makeSafeString(ids.map(v => {
-      if (typeof v === 'string') {
-        return escapeId(v)
-      } else {
-        if (v.length === 0) {
-          throw new ConversionError('Cannot convert empty id')
-        } else {
-          return v.map(v => escapeId(v)).join('.')
-        }
-      }
-    }).join(', '))
-  }
-
-  sigil.value = function value(val: unknown): PgSafeString {
-    return makeSafeString(toLiteral(opts, val))
-  }
+  sigil.raw = raw
+  sigil.id = id
+  sigil.utc = utc
+  sigil.tz = tz
+  sigil.keys = keys
+  sigil.values = (val: { [k: string]: unknown }) => values(opts, val)
+  sigil.bool = bool
+  sigil.csv = (vals: unknown[]) => csv(opts, vals)
+  sigil.csids = csids
+  sigil.value = (val: unknown) => value(opts, val)
 
   return sigil
 }

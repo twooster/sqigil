@@ -1,4 +1,5 @@
-import { makeSafeString, toPostgres, rawType } from '../pg-convertible'
+import { toPostgres, rawType } from '../symbols'
+import { makeSafeString } from '../safe-string'
 
 describe('makeSafeString', () => {
   test('has a callable `toPostgres` symbol', () => {

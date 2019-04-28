@@ -1,5 +1,5 @@
 import { mockDate } from '../__mocks__/date'
-import { sql } from '../sigil'
+import { sql, makeSigil } from '../sigil'
 
 describe('default sigil', () => {
   test('with no interpolation', () => {
@@ -19,6 +19,12 @@ describe('default sigil', () => {
   test('id', () => {
     expect(sql`${sql.id('tbl')} ${sql.id('tbl', 'col')}`)
       .toEqual('"tbl" "tbl"."col"')
+
+    expect(sql`${sql.id(['tbl'])} ${sql.id(['tbl', 'col'])}`)
+      .toEqual('"tbl" "tbl"."col"')
+
+    // @ts-ignore
+    expect(() => sql`${sql.id([])}`).toThrow()
   })
 
   test('utc', () => {
@@ -76,6 +82,8 @@ describe('default sigil', () => {
   test('csids', () => {
     expect(sql`${sql.csids(['tbl', ['tbl', 'col']])}`)
       .toEqual(`"tbl", "tbl"."col"`)
+
+    // @ts-ignore
     expect(() => sql`${sql.csids(['tbl', []])}`).toThrow()
   })
 
@@ -83,8 +91,20 @@ describe('default sigil', () => {
     expect(sql`${sql.value('string')}`)
       .toEqual(`'string'`)
   })
+
+  test('inclusion in raw template strings', () => {
+    expect(`${sql.value("O'Connor")}`).toEqual(`'O''Connor'`)
+  })
 })
 
 describe('makeSigil', () => {
-  test.todo('uses convertDate and convertObject')
+  test('uses convertDate and convertObject', () => {
+    const custom = makeSigil({
+      convertDate: () => 'date!',
+      convertObject: () => 'object!'
+    })
+
+    expect(custom`${new Date()}`).toEqual(`'date!'`)
+    expect(custom`${{ a: 1 }}`).toEqual(`'object!'`)
+  })
 })

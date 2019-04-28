@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PgConvertible | sqigil</title>
+	<title>ConversionOpts | sqigil</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="pgconvertible.html">PgConvertible</a>
+					<a href="conversionopts.html">ConversionOpts</a>
 				</li>
 			</ul>
-			<h1>Interface PgConvertible</h1>
+			<h1>Interface ConversionOpts</h1>
 		</div>
 	</div>
 </header>
@@ -69,35 +69,75 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>An object conforming to the <code>pg-promise</code> custom postgres type
-						formatting interface.</p>
+						<p>Options to use when converting certain values to their SQL-safe
+						equivalents.</p>
 					</div>
-					<dl class="tsd-comment-tags">
-						<dt>property</dt>
-						<dd><p><code>Symbol.for(&#39;ctf.toPostgres&#39;)</code> Method that returns a value. If the
-								<a href="../globals.html#rawtype">rawType</a> attribute of this object is true, the results of this method
-								should be a string. Otherwise, the results will be further escaped
-							in any template string.</p>
-						</dd>
-						<dt>property</dt>
-						<dd><p><code>Symbol.for(&#39;ctf.rawType&#39;)</code> Optional, indicating whether the value
-							of <a href="../globals.html#topostgres">toPostgres</a> is a raw SQL string or not.</p>
-						</dd>
-					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PgConvertible</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="pgsafestring.html" class="tsd-signature-type">PgSafeString</a>
-							</li>
-						</ul>
+						<span class="target">ConversionOpts</span>
 					</li>
 				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="conversionopts.html#convertdate" class="tsd-kind-icon">convert<wbr>Date</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="conversionopts.html#convertobject" class="tsd-kind-icon">convert<wbr>Object</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="convertdate" class="tsd-anchor"></a>
+					<h3>convert<wbr>Date</h3>
+					<div class="tsd-signature tsd-kind-icon">convert<wbr>Date<span class="tsd-signature-symbol">:</span> <a href="dateconversionfn.html" class="tsd-signature-type">DateConversionFn</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/e2ec477/src/to-literal.ts#L44">to-literal.ts:44</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A function to be called to convert dates to their SQL equivalent.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>the date conversion function</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="convertobject" class="tsd-anchor"></a>
+					<h3>convert<wbr>Object</h3>
+					<div class="tsd-signature tsd-kind-icon">convert<wbr>Object<span class="tsd-signature-symbol">:</span> <a href="objectconversionfn.html" class="tsd-signature-type">ObjectConversionFn</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/twooster/sqigil/blob/e2ec477/src/to-literal.ts#L50">to-literal.ts:50</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A function to be called to convert objects to their SQL equivalent.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>the object conversion function</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -113,30 +153,32 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="../classes/conversionerror.html" class="tsd-kind-icon">Conversion<wbr>Error</a>
 					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="conversionopts.html" class="tsd-kind-icon">Conversion<wbr>Opts</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="conversionopts.html#convertdate" class="tsd-kind-icon">convert<wbr>Date</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="conversionopts.html#convertobject" class="tsd-kind-icon">convert<wbr>Object</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
 						<a href="dateconversionfn.html" class="tsd-kind-icon">Date<wbr>Conversion<wbr>Fn</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
 						<a href="objectconversionfn.html" class="tsd-kind-icon">Object<wbr>Conversion<wbr>Fn</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="pgconvertible.html" class="tsd-kind-icon">Pg<wbr>Convertible</a>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="pgsafestring.html" class="tsd-kind-icon">Pg<wbr>Safe<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="sqlsigil.html" class="tsd-kind-icon">Sql<wbr>Sigil</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="toliteralopts.html" class="tsd-kind-icon">To<wbr>Literal<wbr>Opts</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="../globals.html#sigilopts" class="tsd-kind-icon">Sigil<wbr>Opts</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="../globals.html#rawtype" class="tsd-kind-icon">raw<wbr>Type</a>
@@ -147,14 +189,26 @@
 					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="../globals.html#topostgres" class="tsd-kind-icon">to<wbr>Postgres</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#bool" class="tsd-kind-icon">bool</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#csids" class="tsd-kind-icon">csids</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#csv" class="tsd-kind-icon">csv</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#datetostring" class="tsd-kind-icon">date<wbr>ToString</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#datetostringutc" class="tsd-kind-icon">date<wbr>ToStringUTC</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../globals.html#ispgsafestring" class="tsd-kind-icon">is<wbr>PgSafe<wbr>String</a>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#id" class="tsd-kind-icon">id</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#keys" class="tsd-kind-icon">keys</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#makesafestring" class="tsd-kind-icon">make<wbr>Safe<wbr>String</a>
@@ -162,8 +216,26 @@
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#makesigil" class="tsd-kind-icon">make<wbr>Sigil</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#raw" class="tsd-kind-icon">raw</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#templatesql" class="tsd-kind-icon">template<wbr>Sql</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#toliteral" class="tsd-kind-icon">to<wbr>Literal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#tz" class="tsd-kind-icon">tz</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#utc" class="tsd-kind-icon">utc</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#value" class="tsd-kind-icon">value</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="../globals.html#values" class="tsd-kind-icon">values</a>
 					</li>
 				</ul>
 			</nav>

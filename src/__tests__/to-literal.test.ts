@@ -1,9 +1,9 @@
 import { dateToStringUTC } from '../date'
-import { ToLiteralOpts, toLiteral } from '../to-literal'
-import { toPostgres, rawType } from '../pg-convertible'
+import { ConversionOpts, toLiteral } from '../to-literal'
+import { toPostgres, rawType } from '../symbols'
 
 describe('toLiteral', () => {
-  const opts: ToLiteralOpts = {
+  const opts: ConversionOpts = {
     convertDate: dateToStringUTC,
     convertObject: JSON.stringify
   }
@@ -13,11 +13,19 @@ describe('toLiteral', () => {
     expect(toLiteral(opts, `b'ob`)).toEqual(`'b''ob'`)
   })
 
+  it('accepts String objects', () => {
+    expect(toLiteral(opts, new String("O'Connor"))).toEqual(`'O''Connor'`)
+  })
+
   test('converts numbers', () => {
     expect(toLiteral(opts, 1.5)).toEqual('1.5')
     expect(toLiteral(opts, Infinity)).toEqual(`'+Infinity'`)
     expect(toLiteral(opts, -Infinity)).toEqual(`'-Infinity'`)
     expect(toLiteral(opts, NaN)).toEqual(`'NaN'`)
+  })
+
+  it('accepts Number objects', () => {
+    expect(toLiteral(opts, new Number(123))).toEqual(`123`)
   })
 
   test('converts booleans', () => {

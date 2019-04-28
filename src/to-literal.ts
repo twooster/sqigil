@@ -1,5 +1,5 @@
 import { ConversionError } from './errors'
-import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
+import { rawType, toPostgres } from './symbols'
 
 interface DateConversionFn {
   /**
@@ -35,7 +35,7 @@ interface ObjectConversionFn {
  * Options to use when converting certain values to their SQL-safe
  * equivalents.
  */
-export interface ToLiteralOpts {
+export interface ConversionOpts {
   /**
    * A function to be called to convert dates to their SQL equivalent.
    *
@@ -66,7 +66,7 @@ function escapeString(value: string, inArray: boolean): string {
  * representation
  * @hidden
  */
-function arrayToLiteral(opts: ToLiteralOpts, arr: unknown[], inArray: boolean, seen: Set<unknown>): string {
+function arrayToLiteral(opts: ConversionOpts, arr: unknown[], inArray: boolean, seen: Set<unknown>): string {
   const val =  '{' + arr.map(val => toLiteralRecur(opts, val, true, seen)).join(', ') + '}'
   if (!inArray) {
     return escapeString(val, false)
@@ -77,7 +77,7 @@ function arrayToLiteral(opts: ToLiteralOpts, arr: unknown[], inArray: boolean, s
 /**
  * @hidden
  */
-function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, seen?: Set<unknown>): string {
+function toLiteralRecur(opts: ConversionOpts, val: unknown, inArray: boolean, seen?: Set<unknown>): string {
   switch (typeof val) {
     case 'string':
       return escapeString(val, inArray)
@@ -103,6 +103,9 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, see
     case 'object':
       if (val === null) {
         return "NULL"
+      } else if (val instanceof String || val instanceof Number) {
+        // Boxed types
+        return toLiteralRecur(opts, val.valueOf(), inArray, seen)
       } else if (val instanceof Date) {
         return toLiteralRecur(opts, opts.convertDate(val), inArray, seen)
       } else if (val instanceof Buffer) {
@@ -111,24 +114,23 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, see
         if (!seen) {
           seen = new Set()
         } else if (seen.has(val)) {
-          throw new ConversionError('Cyclical data')
+          throw new ConversionError('Cyclical data structure encountered')
         }
         seen.add(val)
-        if (isPgConvertible(val)) {
-          const pgVal = val[toPostgres]()
-          if (val[rawType]) {
+        if (typeof (val as any)[toPostgres] === 'function') {
+          const pgVal = (val as any)[toPostgres]()
+          if ((val as any)[rawType]) {
             if (typeof pgVal !== 'string') {
-              throw new ConversionError('Expected string from raw value')
+              throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }
             return pgVal
           }
           return toLiteralRecur(opts, pgVal, inArray, seen)
         } else if (typeof (val as any)['toPostgres'] === 'function') {
-          // Support non-symbol toPostgres objects
-          const pgVal = (val as any)['toPostgres']();
+          const pgVal = (val as any)['toPostgres']()
           if ((val as any)['rawType']) {
             if (typeof pgVal !== 'string') {
-              throw new ConversionError('Expected string from raw value')
+              throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }
             return pgVal
           }
@@ -140,6 +142,9 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, see
         }
       }
 
+    // Functions and symbols not supported by default
+    case 'function':
+    case 'symbol':
     default:
       throw new ConversionError('Unhandled type: ' + (typeof val))
   }
@@ -153,6 +158,6 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, see
  * @param val the value to convert
  * @returns the given value converted to a sql-safe string
  */
-export function toLiteral(opts: ToLiteralOpts, val: unknown): string {
+export function toLiteral(opts: ConversionOpts, val: unknown): string {
   return toLiteralRecur(opts, val, false)
 }

@@ -1,3 +1,5 @@
-export { sql, makeSigil, SigilOpts } from './sigil'
 export { ConversionError } from './errors'
-export { isPgConvertible, isPgSafeString, makeSafeString, rawType, toPostgres } from './pg-convertible'
+export { ConversionOpts } from './to-literal'
+export { makeSafeString } from './safe-string'
+export { sql, makeSigil } from './sigil'
+export { toPostgres, rawType } from './symbols'
