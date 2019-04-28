@@ -65,19 +65,19 @@ describe('toLiteral', () => {
 
   describe('arrays', () => {
     test('converts empty arrays', () => {
-      expect(toLiteral(opts, [])).toEqual('{}')
+      expect(toLiteral(opts, [])).toEqual("'{}'")
     })
 
     test('converts arrays with some values', () => {
-      expect(toLiteral(opts, ['hi', 'there'])).toEqual(`{'hi', 'there'}`)
+      expect(toLiteral(opts, ['hi', 'there'])).toEqual(`'{"hi", "there"}'`)
     })
 
     test('escapes array values', () => {
-      expect(toLiteral(opts, [`h'i`, Infinity])).toEqual(`{'h''i', '+Infinity'}`)
+      expect(toLiteral(opts, [`h'i the"re`, Infinity])).toEqual(`'{"h''i the\\"re", ''+Infinity''}'`)
     })
 
     test('supports nested arrays', () => {
-      expect(toLiteral(opts, [['hi'], ['there']])).toEqual(`{{'hi'}, {'there'}}`)
+      expect(toLiteral(opts, [['hi'], ['there']])).toEqual(`'{{"hi"}, {"there"}}'`)
     })
 
     test('throws on mutually recursive arrays', () => {

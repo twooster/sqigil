@@ -1,7 +1,6 @@
 import { ConversionError } from './errors'
 import { rawType, toPostgres, isPgConvertible } from './pg-convertible'
 
-
 interface DateConversionFn {
   /**
    * A function to be called to convert dates to their SQL equivalent.
@@ -55,8 +54,11 @@ export interface ToLiteralOpts {
  * Escapes and wraps a string to its postgres-safe equivalent
  * @hidden
  */
-function escapeString(value: string): string {
-  return "'" + value.replace(/'/g, "''") + "'"
+function escapeString(value: string, inArray: boolean): string {
+  if (inArray) {
+    return `"` + value.replace(/"/g, `\\"`) + '"'
+  }
+  return `'` + value.replace(/'/g, `''`) + `'`
 }
 
 /**
@@ -64,18 +66,21 @@ function escapeString(value: string): string {
  * representation
  * @hidden
  */
-function arrayToLiteral(opts: ToLiteralOpts, arr: unknown[], seen: Set<unknown>): string {
-  const literals = arr.map(val => toLiteralRecur(opts, val, seen))
-  return '{' + literals.join(', ') + '}'
+function arrayToLiteral(opts: ToLiteralOpts, arr: unknown[], inArray: boolean, seen: Set<unknown>): string {
+  const val =  '{' + arr.map(val => toLiteralRecur(opts, val, true, seen)).join(', ') + '}'
+  if (!inArray) {
+    return escapeString(val, false)
+  }
+  return val
 }
 
 /**
  * @hidden
  */
-function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>): string {
+function toLiteralRecur(opts: ToLiteralOpts, val: unknown, inArray: boolean, seen?: Set<unknown>): string {
   switch (typeof val) {
     case 'string':
-      return escapeString(val)
+      return escapeString(val, inArray)
 
     case 'number':
       // Logic from pg-promise
@@ -99,9 +104,9 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
       if (val === null) {
         return "NULL"
       } else if (val instanceof Date) {
-        return toLiteralRecur(opts, opts.convertDate(val), seen)
+        return toLiteralRecur(opts, opts.convertDate(val), inArray, seen)
       } else if (val instanceof Buffer) {
-        return "E'\\x" + val.toString('hex')  + "'"
+        return `E'\\x` + val.toString('hex')  + `'`
       } else {
         if (!seen) {
           seen = new Set()
@@ -117,7 +122,7 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
             }
             return pgVal
           }
-          return toLiteralRecur(opts, pgVal, seen)
+          return toLiteralRecur(opts, pgVal, inArray, seen)
         } else if (typeof (val as any)['toPostgres'] === 'function') {
           // Support non-symbol toPostgres objects
           const pgVal = (val as any)['toPostgres']();
@@ -127,11 +132,11 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
             }
             return pgVal
           }
-          return toLiteralRecur(opts, pgVal, seen)
+          return toLiteralRecur(opts, pgVal, inArray, seen)
         } else if (Array.isArray(val)) {
-          return arrayToLiteral(opts, val, seen)
+          return arrayToLiteral(opts, val, inArray, seen)
         } else {
-          return toLiteralRecur(opts, opts.convertObject(val as object), seen)
+          return toLiteralRecur(opts, opts.convertObject(val as object), inArray, seen)
         }
       }
 
@@ -149,5 +154,5 @@ function toLiteralRecur(opts: ToLiteralOpts, val: unknown, seen?: Set<unknown>):
  * @returns the given value converted to a sql-safe string
  */
 export function toLiteral(opts: ToLiteralOpts, val: unknown): string {
-  return toLiteralRecur(opts, val)
+  return toLiteralRecur(opts, val, false)
 }

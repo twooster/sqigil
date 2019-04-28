@@ -7,8 +7,8 @@ describe('default sigil', () => {
   })
 
   test('basic value inclusion', () => {
-    expect(sql`SELECT ${1}, ${"str"}, ${[1,2,3]}`)
-      .toEqual(`SELECT 1, 'str', {1, 2, 3}`)
+    expect(sql`SELECT ${1}, ${"str"}, ${[1,`He said, "I can't!"`,3]}`)
+      .toEqual(`SELECT 1, 'str', '{1, "He said, \\"I can''t!\\"", 3}'`)
   })
 
   test('bool', () => {
