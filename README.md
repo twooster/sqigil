@@ -234,6 +234,13 @@ sql`INSERT INTO hstore_tbl(attrs) VALUES (${m})`
 // INSERT INTO hstore_tbl(attrs) VALUES (hstore(ARRAY['a', '1', 'b', '2']))
 ```
 
+Important notes:
+* Use only symbol form or string form in a single object. Mixing the two will
+  not work.
+
+* If `rawType` is used, `toPostgres` **must** return a string, or an
+  error will be thrown.
+
 (This feature is built to roughly concur with the interface defined by
 `pg-promise`.)
 

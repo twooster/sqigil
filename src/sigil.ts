@@ -185,12 +185,14 @@ export interface SqlSigil {
    *   // `SELECT 10, 1.2, '+Infinity', 'NaN'`
    *   ```
    *
-   * * Arrays will be converted to Postgres array literals, with value
-   *   conversions applied to each array element.
+   * * Arrays will be converted to string-formatted Postgres array literals,
+   *   with value conversions applied to each array element. The string form
+   *   is used because an empty SQL array (`ARRAY[]`) without a specific
+   *   type is not allowed by Postgres.
    *
    *   ```javascript
    *   sql`SELECT ${[0, "X", new Date()]}`
-   *   // `SELECT {0, 'X', '2019-03-18T08:11:50.221+00:00'}`
+   *   // `SELECT '{0, "X", "2019-03-18T08:11:50.221+00:00"}'`
    *   ```
    *
    * * Buffers will be converted to a hex-encoded
