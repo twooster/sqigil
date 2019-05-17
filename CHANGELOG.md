@@ -1,6 +1,6 @@
 # SQigiL Changelog
 
-# vNext
+# v0.4.0
 
 * Renamed PgSafeString -> SafeString
 * Now with linting!
