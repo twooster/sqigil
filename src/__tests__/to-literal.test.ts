@@ -155,4 +155,9 @@ describe('toLiteral', () => {
       })
     })
   })
+
+  it('appropriately handles nested objects referenced in multiple places', () => {
+    const a = [0]
+    expect(toLiteral(opts, [a, a])).toEqual(`'{{0}, {0}}'`)
+  })
 })

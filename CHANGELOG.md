@@ -4,6 +4,7 @@
 
 * Renamed PgSafeString -> SafeString
 * Now with linting!
+* Fixed cyclical data structures bug
 
 # v0.3.0
 

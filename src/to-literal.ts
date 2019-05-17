@@ -130,29 +130,34 @@ function toLiteralRecur(
           throw new ConversionError('Cyclical data structure encountered')
         }
         seen.add(val)
+        let result
         if (typeof (val as any)[toPostgres] === 'function') {
           const pgVal = (val as any)[toPostgres]()
           if ((val as any)[rawType]) {
             if (typeof pgVal !== 'string') {
               throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }
-            return pgVal
+            result = pgVal
+          } else{
+            result = toLiteralRecur(opts, pgVal, inArray, seen)
           }
-          return toLiteralRecur(opts, pgVal, inArray, seen)
         } else if (typeof (val as any).toPostgres === 'function') {
           const pgVal = (val as any).toPostgres()
           if ((val as any).rawType) {
             if (typeof pgVal !== 'string') {
               throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }
-            return pgVal
+            result = pgVal
+          } else {
+            result = toLiteralRecur(opts, pgVal, inArray, seen)
           }
-          return toLiteralRecur(opts, pgVal, inArray, seen)
         } else if (Array.isArray(val)) {
-          return arrayToLiteral(opts, val, inArray, seen)
+          result = arrayToLiteral(opts, val, inArray, seen)
         } else {
-          return toLiteralRecur(opts, opts.convertObject(val as object), inArray, seen)
+          result = toLiteralRecur(opts, opts.convertObject(val as object), inArray, seen)
         }
+        seen.delete(val)
+        return result
       }
 
     // Functions and symbols not supported by default
