@@ -138,7 +138,7 @@ function toLiteralRecur(
               throw new ConversionError('Expected string from `toPostgres` when `rawType` is true')
             }
             result = pgVal
-          } else{
+          } else {
             result = toLiteralRecur(opts, pgVal, inArray, seen)
           }
         } else if (typeof (val as any).toPostgres === 'function') {
