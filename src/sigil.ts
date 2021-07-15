@@ -375,7 +375,6 @@ function templateSql(
   return str
 }
 
-
 /**
  * Builds a sigil/templating object given the provided options
  *

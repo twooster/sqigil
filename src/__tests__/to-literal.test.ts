@@ -51,7 +51,6 @@ describe('toLiteral', () => {
     expect(toLiteral(opts, new Date())).toEqual(`'some-date'`)
   })
 
-
   test('converts unknown objects via provided conversion fn', () => {
     const opts = {
       convertDate: dateToStringUTC,
